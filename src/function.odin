@@ -70,3 +70,17 @@ function_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	return out
 }
 
+function_directive :: proc(func: ^Function) -> (out: string) {
+	assert(func != nil)
+	out_builder: strings.Builder
+	strings.builder_init(&out_builder) 
+	defer strings.builder_destroy(&out_builder)
+
+	strings.write_string(&out_builder, "using ")
+	strings.write_string(&out_builder, func.directive)
+	strings.write_string(&out_builder, ";")
+
+  out = strings.to_string(out_builder)
+	return out
+}
+

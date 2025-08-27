@@ -21,14 +21,14 @@ debug_log := src.Function {
 	name = "Debug.Log",
 	output = void,
 	input = {&hello},
-	directive = "",
+	directive = "UnityEngine",
 }
 
 start := src.Function {
 	name = "Start",
 	output = void,
 	input = nil,
-	directive = ""
+	directive = "UnityEngine"
 }
 
 foo := src.Class {
@@ -39,6 +39,7 @@ foo := src.Class {
 file: src.File_Context
 
 main :: proc() {
+	src.file_add(src.function_directive(&debug_log))
 	src.file_add(src.class_declare_begin(&file, &foo))
 	src.file_add(src.function_declare_begin(&file, &start))
 	src.file_add(src.variable_declare(&file, &hello))

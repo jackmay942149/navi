@@ -5,8 +5,8 @@ import "core:strings"
 Class :: struct {
 	name:      string,
 	parent:    string,
-	members:   []Variable,
-	functions: []Function,
+	members:   []^Variable,
+	functions: []^Function,
 }
 
 class_declare_begin :: proc(file: ^File_Context, class: ^Class) -> (out: string) {

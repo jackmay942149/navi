@@ -41,15 +41,10 @@ function_call :: proc(t: ^test.T) {
 		value = "Hello World"
 	}
 
-	void := src.Variable {
-		type = "void",
-	}
-
 	file: src.File_Context
 
 	debug_log := src.Function {
 		name = "Debug.Log",
-		output = void,
 		input = {&hello},
 		directive = "",
 	}
@@ -61,15 +56,10 @@ function_call :: proc(t: ^test.T) {
 
 @(test)
 function_declare_begin :: proc(t: ^test.T) {
-	void := src.Variable {
-		type = "void",
-	}
-
 	file: src.File_Context
 
 	start := src.Function {
 		name = "Start",
-		output = void,
 		input = nil,
 		directive = ""
 	}

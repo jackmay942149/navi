@@ -4,17 +4,18 @@ import "core:strings"
 
 Function :: struct {
 	name:           string,
-	output:         Variable,
+	output:         Maybe(Variable),
 	input:          []^Variable,
 	directive:      string,
 	exec_in_count:  int,
-	exec_ins:       []Function,
+	exec_ins:       []^Function,
 	exec_out_count: int,
-	exec_outs:      []Function,
+	exec_outs:      []^Function,
 }
 
 function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
+	assert(func != nil)
 	out_builder: strings.Builder
 	strings.builder_init(&out_builder) 
 	defer strings.builder_destroy(&out_builder)
@@ -34,6 +35,7 @@ function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 
 function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
+	assert(func != nil)
 	out_builder: strings.Builder
 	strings.builder_init(&out_builder) 
 	defer strings.builder_destroy(&out_builder)
@@ -43,7 +45,11 @@ function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: st
 	}
 	file.indent_lvl += 1
 
-	strings.write_string(&out_builder, func.output.type)
+	if func.output == nil {
+		strings.write_string(&out_builder, "void")
+  } else {
+  	strings.write_string(&out_builder, func.output.(Variable).type)
+  }
 	strings.write_string(&out_builder, " ")
 	strings.write_string(&out_builder, func.name)
 	strings.write_string(&out_builder, "() {")

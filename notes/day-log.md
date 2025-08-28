@@ -6,10 +6,13 @@
 - Item
 
 # Release - v.0.1
-- Add Graph Traversal
-- Add Using Declaration
 - Add File Output
 - Add Rendering
+
+## Day 3 - 28/08/2025
+- Added using declaration
+- Added end to end debug log test
+- Added graph traversal
 
 ## Day 2 - 27/08/2025
 - Added small test suite

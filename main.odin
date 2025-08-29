@@ -3,13 +3,13 @@ package main
 import "./src"
 import "core:fmt"
 
-hello:     src.Variable
-one:     src.Variable
-start:     src.Function
-awake:     src.Function
-debug_log: src.Function
+hello:         src.Variable
+one:           src.Variable
+start:         src.Function
+awake:         src.Function
+debug_log:     src.Function
 debug_log_one: src.Function
-file:      src.File_Context
+file:          src.File_Context
 
 main :: proc() {
 	hello = src.Variable {

@@ -6,8 +6,13 @@
 - Item
 
 # Release - v.0.1
-- Add File Output
+- Add File Output Tests
+- Add Interface That Graph Will Call
+- Private functions
 - Add Rendering
+
+## Day 4 - 29/08/2025
+- Added File Output
 
 ## Day 3 - 28/08/2025
 - Added using declaration

@@ -13,6 +13,7 @@ Function :: struct {
 	exec_outs:      []^Function,
 }
 
+@(private)
 function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
 	assert(func != nil)
@@ -33,6 +34,7 @@ function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	return out
 }
 
+@(private)
 function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
 	assert(func != nil)
@@ -58,6 +60,7 @@ function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: st
 	return out
 }
 
+@(private)
 function_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	assert(file != nil)
 	assert(file.indent_lvl > 0)
@@ -76,6 +79,7 @@ function_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	return out
 }
 
+@(private)
 function_directive :: proc(func: ^Function) -> (out: string) {
 	assert(func != nil)
 	out_builder: strings.Builder

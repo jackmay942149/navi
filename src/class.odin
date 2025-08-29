@@ -5,10 +5,11 @@ import "core:strings"
 Class :: struct {
 	name:      string,
 	parent:    string,
-	members:   []^Variable,
-	functions: []^Function,
+	members:   [dynamic]^Variable,
+	functions: [dynamic]^Function,
 }
 
+@(private)
 class_declare_begin :: proc(file: ^File_Context, class: ^Class) -> (out: string) {
 	assert(file != nil)
 	assert(class != nil)
@@ -31,6 +32,7 @@ class_declare_begin :: proc(file: ^File_Context, class: ^Class) -> (out: string)
 	return out
 }
 
+@(private)
 class_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	assert(file != nil)
 	assert(file.indent_lvl > 0)

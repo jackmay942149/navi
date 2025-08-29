@@ -22,33 +22,10 @@
 - Functions ([]Function)
 - Variables ([]Variable)
 
-# Example Graph - Hello World
-## Function 
-- Name: "Start"
-- Output: void
-- Inputs: {void}
-- Using: "UnityEngine"
-- Execution Ins Count: 0
-- Execution Ins: Nil
-- Execution Outs Count: 1
-- Execution Outs: {&Debug.Log}
-
-## Variable
-- Name: "Hello"
-- Type: "string"
-- Fields: nil
-- Value: "Hello World"
-
-## Function
-- Name: "Debug.Log"
-- Output: void
-- Inputs: {&Hello}
-- Using: "UnityEngine"
-- Execution Ins Count: 1
-- Execution Ins: &Start
-- Execution Outs Count: 1
-- Execution Outs: {nil}
-
-## Graph
-- Functions: {&Start, &Debug.Log}
-- Variables: {&Hello}
+# Application Interface 
+- Create class (Default one atm)
+- Create member variable
+- Add function
+- Link function
+- Link variable
+- Save class

@@ -5,7 +5,8 @@ import "core:strings"
 Function :: struct {
 	name:           string,
 	output:         Maybe(Variable),
-	input:          []^Variable,
+	input_count:    int,
+	inputs:         []^Variable,
 	directive:      string,
 	exec_in_count:  int,
 	exec_ins:       []^Function,
@@ -13,7 +14,6 @@ Function :: struct {
 	exec_outs:      []^Function,
 }
 
-@(private)
 function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
 	assert(func != nil)
@@ -27,14 +27,13 @@ function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 
 	strings.write_string(&out_builder, func.name)
 	strings.write_string(&out_builder, "(")
-	strings.write_string(&out_builder, func.input[0].name)
+	strings.write_string(&out_builder, func.inputs[0].name)
 	strings.write_string(&out_builder, ");")
 
   out = strings.to_string(out_builder)
 	return out
 }
 
-@(private)
 function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 	assert(file != nil)
 	assert(func != nil)
@@ -60,7 +59,6 @@ function_declare_begin :: proc(file: ^File_Context, func: ^Function) -> (out: st
 	return out
 }
 
-@(private)
 function_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	assert(file != nil)
 	assert(file.indent_lvl > 0)
@@ -79,7 +77,6 @@ function_declare_end :: proc(file: ^File_Context) -> (out: string) {
 	return out
 }
 
-@(private)
 function_directive :: proc(func: ^Function) -> (out: string) {
 	assert(func != nil)
 	out_builder: strings.Builder

@@ -45,7 +45,7 @@ function_call :: proc(t: ^test.T) {
 
 	debug_log := src.Function {
 		name = "Debug.Log",
-		input = {&hello},
+		inputs = {&hello},
 		directive = "",
 	}
 
@@ -60,7 +60,7 @@ function_declare_begin :: proc(t: ^test.T) {
 
 	start := src.Function {
 		name = "Start",
-		input = nil,
+		inputs = nil,
 		directive = ""
 	}
 

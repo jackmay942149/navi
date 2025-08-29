@@ -24,7 +24,7 @@ void := src.Variable {
 debug_log := src.Function {
 	name = "Debug.Log",
 	output = void,
-	input = {&hello},
+	inputs = {&hello},
 	directive = "UnityEngine",
 }
 
@@ -32,7 +32,7 @@ debug_log := src.Function {
 start := src.Function {
 	name = "Start",
 	output = void,
-	input = nil,
+	inputs = nil,
 	directive = "UnityEngine"
 }
 

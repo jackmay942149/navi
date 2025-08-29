@@ -1,10 +1,11 @@
-package main
+package tests
 
-import "./src"
-import "core:fmt"
+import "../src"
+import test "core:testing"
 
-main :: proc() {
-	foo           := src.init_class("Foo", "MonoBehaviour")
+@(test)
+basic_main :: proc(t: ^test.T) {
+	foo           := src.init_class("Basic", "MonoBehaviour")
 
 	hello         := src.init_member(&foo, "Hello", .String, "Hello World")
 	one           := src.init_member(&foo, "One", .Int, "1")
@@ -18,5 +19,4 @@ main :: proc() {
 	src.link_variable(hello, debug_log)
 
 	src.save_class(&foo)
-	fmt.println("Saved Successfully")
 }

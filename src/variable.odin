@@ -9,7 +9,6 @@ Variable :: struct {
 	value:  string,
 }
 
-@(private)
 variable_declare :: proc(file: ^File_Context, var: ^Variable) -> (out: string) {
 	assert(file != nil)
 	out_builder: strings.Builder

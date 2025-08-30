@@ -17,6 +17,11 @@ main :: proc() {
 	src.link_function(start, debug_log)
 	src.link_variable(hello, debug_log)
 
-	src.save_class(&foo)
+	src.application_init(800, 680, "Navi")
+	for !src.application_should_close() {
+		src.application_update(&foo)
+	}
+
+	src.destroy_class(&foo)
 	fmt.println("Saved Successfully")
 }

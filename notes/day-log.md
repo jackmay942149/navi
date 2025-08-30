@@ -6,12 +6,11 @@
 - Item
 
 # Release - v.0.1
-- Add File Output Tests
-- Add Interface That Graph Will Call
 - Add Rendering
 
 ## Day 5 - 30/08/2025
 - Fixed memory leaks
+- Started adding raylib renderer
 
 ## Day 4 - 29/08/2025
 - Added File Output

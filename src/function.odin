@@ -12,6 +12,7 @@ Function :: struct {
 	exec_ins:       []^Function,
 	exec_out_count: int,
 	exec_outs:      []^Function,
+	node:      NodeInfo,
 }
 
 function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {

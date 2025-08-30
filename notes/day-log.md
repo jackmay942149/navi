@@ -5,8 +5,27 @@
 ## Day
 - Item
 
+# Release - v.0.2
+- Add Vulkan Rendering
+- Named Variables
+
 # Release - v.0.1
 - Add Rendering
+
+- Point and Click Context
+* Move Node
+* Enter Value
+* Connect Node
+
+- Add Controls
+* Add Vector3   (v)
+* Add Debug Log (d)
+* Add Int       (i)
+* Add String    (s)
+* Add Start     (b)
+* Add Awake     (a)
+
+- Delete Nodes
 
 ## Day 5 - 30/08/2025
 - Fixed memory leaks

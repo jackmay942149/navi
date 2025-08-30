@@ -8,11 +8,14 @@
 # Release - v.0.1
 - Add File Output Tests
 - Add Interface That Graph Will Call
-- Private functions
 - Add Rendering
+
+## Day 5 - 30/08/2025
+- Fixed memory leaks
 
 ## Day 4 - 29/08/2025
 - Added File Output
+- Added main applicsation interface
 
 ## Day 3 - 28/08/2025
 - Added using declaration

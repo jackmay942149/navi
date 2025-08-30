@@ -19,4 +19,5 @@ basic_main :: proc(t: ^test.T) {
 	src.link_variable(hello, debug_log)
 
 	src.save_class(&foo)
+	src.destroy_class(&foo)
 }

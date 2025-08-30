@@ -13,6 +13,7 @@ file_init :: proc(file: ^File_Context, name: string) {
 	assert(file != nil)
 	temp := [?]string{"./", name, ".cs"}
 	file_path := strings.concatenate(temp[:])
+	defer delete(file_path)
 	f, err := os.open(file_path, os.O_WRONLY | os.O_CREATE)
 	if err != nil {
 		fmt.println(err)
@@ -64,6 +65,7 @@ file_add_class :: proc(class: ^Class) {
 		}
 	}
 	file_add_strings(&file, &req_declares)
+	delete(req_declares)
 
 	// Initiate class
 	file_add_string(&file, class_declare_begin(&file, class))

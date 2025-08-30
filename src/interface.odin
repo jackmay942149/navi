@@ -64,3 +64,19 @@ link_variable :: proc(var: ^Variable, func: ^Function) {
 save_class :: proc(class: ^Class) {
 	file_add_class(class)
 }
+
+destroy_class :: proc(class: ^Class) {
+	for &member in class.members {
+		assert(member != nil)
+		free(member)
+	}
+	for &func in class.functions {
+		assert(func != nil)
+		delete(func.inputs)
+		delete(func.exec_ins)
+		delete(func.exec_outs)
+		free(func)
+	}
+	delete(class.members)
+	delete(class.functions)
+}

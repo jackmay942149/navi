@@ -1,38 +1,52 @@
 package src
 
-import "core:strings"
+import str "core:strings"
 
 Variable :: struct {
 	name:   cstring,
-	type:   string,
+	type:   Type,
 	fields: []Variable,
 	value:  string,
 	node:   NodeInfo,
 }
 
+@(private)
 variable_declare :: proc(file: ^File_Context, var: ^Variable) -> (out: string) {
 	assert(file != nil)
-	out_builder: strings.Builder
-	strings.builder_init(&out_builder) 
-	defer strings.builder_destroy(&out_builder)
+	out_builder: str.Builder
+	str.builder_init(&out_builder) 
 
 	for i in 0..<file.indent_lvl * 2 {
-		strings.write_string(&out_builder, " ")
+		str.write_string(&out_builder, " ")
 	}
 
-	strings.write_string(&out_builder, var.type)
-	strings.write_string(&out_builder, " ")
-	strings.write_string(&out_builder, string(var.name))
-	strings.write_string(&out_builder, " = ")
-	if var.type == "string" {
-		strings.write_string(&out_builder, "\"")
-		strings.write_string(&out_builder, var.value)
-		strings.write_string(&out_builder, "\";")
-  } else {
-  	strings.write_string(&out_builder, var.value)
-  	strings.write_string(&out_builder, ";")
+	str.write_string(&out_builder, Type_As_String[var.type])
+	str.write_string(&out_builder, " ")
+	str.write_string(&out_builder, string(var.name))
+
+	#partial switch var.type {
+		case .String: {
+			str.write_string(&out_builder, " = ")
+			str.write_string(&out_builder, "\"")
+			str.write_string(&out_builder, var.value)
+			str.write_string(&out_builder, "\"")
+		}
+		case .Float: {
+			str.write_string(&out_builder, " = ")
+			str.write_string(&out_builder, var.value)
+			if str.contains(var.value, ".") {
+				str.write_string(&out_builder, "f")
+			} else {
+				str.write_string(&out_builder, ".0f")
+			}
+		}
+		case .Int: {
+			str.write_string(&out_builder, " = ")
+	  	str.write_string(&out_builder, var.value)
+	  }
   }
 
-  out = strings.to_string(out_builder)
+	str.write_string(&out_builder, ";")
+  out = str.to_string(out_builder)
 	return out
 }

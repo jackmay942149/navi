@@ -9,18 +9,20 @@ File_Context :: struct {
 	indent_lvl: uint,
 }
 
+@(private)
 file_init :: proc(file: ^File_Context, name: string) {
 	assert(file != nil)
 	temp := [?]string{"./", name, ".cs"}
 	file_path := strings.concatenate(temp[:])
 	defer delete(file_path)
-	f, err := os.open(file_path, os.O_WRONLY | os.O_CREATE)
+	f, err := os.open(file_path, os.O_TRUNC | os.O_WRONLY | os.O_CREATE)
 	if err != nil {
 		fmt.println(err)
 	}
 	file.handle = f
 }
 
+@(private)
 file_close :: proc(file: ^File_Context) {
 	assert(file != nil)
 	err := os.close(file.handle)
@@ -29,12 +31,14 @@ file_close :: proc(file: ^File_Context) {
 	}
 }
 
+@(private)
 file_add_string :: proc(file: ^File_Context, line: string) {
 	assert(file != nil)
 	os.write_string(file.handle, line)
 	os.write_string(file.handle, "\n")
 }
 
+@(private)
 file_add_strings :: proc(file: ^File_Context, strings: ^[]string) {
 	for s in strings {
 		if s != "" {
@@ -43,6 +47,7 @@ file_add_strings :: proc(file: ^File_Context, strings: ^[]string) {
 	}
 }
 
+@(private)
 file_add_class :: proc(class: ^Class) {
 	assert(class != nil)
 	file: File_Context
@@ -78,21 +83,25 @@ file_add_class :: proc(class: ^Class) {
 
 	// Add functions
 	for &func in class.functions {
-		if func.exec_in_count == 0 {
-			file_add_string(&file, function_declare_begin(&file, func))
-			defer file_add_string(&file, function_declare_end(&file))
+		file_add_function(func, &file)
+	}
+}
 
-			// Recursively move through linked list of functions
-			temp := func
-			for len(temp.exec_outs) > 0 {
-				if temp.exec_outs[0] == nil {
-					break
-				}
-				file_add_string(&file, function_call(&file, temp.exec_outs[0]))
-				temp = temp.exec_outs[0]
-				if temp.exec_out_count == 0 {
-					break  
-				}
+file_add_function :: proc(func: ^Function, file: ^File_Context) {
+	if func.exec_in_count == 0 {
+		file_add_string(file, function_declare_begin(file, func))
+		defer file_add_string(file, function_declare_end(file))
+
+		// Recursively move through linked list of functions
+		temp := func
+		for len(temp.exec_outs) > 0 {
+			if temp.exec_outs[0] == nil {
+				break
+			}
+			file_add_string(file, function_call(file, temp.exec_outs[0]))
+			temp = temp.exec_outs[0]
+			if temp.exec_out_count == 0 {
+				break  
 			}
 		}
 	}

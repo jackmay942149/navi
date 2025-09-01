@@ -22,7 +22,7 @@ init_member :: proc(class: ^Class, name: cstring, type: Type, value: string, pos
 	assert(var != nil)
 
 	var.name = name
-	var.type = Type_As_String[type]
+	var.type = type
 	var.value = value
 	var.node.pos = pos
 
@@ -34,7 +34,12 @@ set_member :: proc() {
 	
 }
 
-add_function :: proc(class: ^Class, name, directive: string, input_count, exec_in_count, exec_out_count: int, allocator := context.allocator) -> (func: ^Function) {
+add_function :: proc {
+	add_function_new,
+	add_function_defined,
+}
+
+add_function_new :: proc(class: ^Class, name, directive: string, input_count, exec_in_count, exec_out_count: int, allocator := context.allocator) -> (func: ^Function) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.functions != nil)
@@ -60,6 +65,12 @@ add_function :: proc(class: ^Class, name, directive: string, input_count, exec_i
 
 	append(&class.functions, func)
 	return func
+}
+
+add_function_defined :: proc(class: ^Class, def: Predefined_Function, allocator := context.allocator) -> (func: ^Function){
+	context.allocator = allocator
+	using def
+	return add_function_new(class, name, directive, input_count, exec_in_count, exec_out_count)
 }
 
 link_function :: proc(from: ^Function, to: ^Function) {

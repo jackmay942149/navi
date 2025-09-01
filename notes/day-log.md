@@ -29,6 +29,9 @@
 
 - Delete Nodes
 
+## Day 6 - 01/09/2025
+- Added better e2e testing
+
 ## Day 5 - 30/08/2025
 - Fixed memory leaks
 - Started adding raylib renderer

@@ -10,7 +10,21 @@ empty_class :: proc(t: ^test.T) {
 	navi.save_class(&empty)
 	util_check_output_file("./Empty.cs", "./tests/Empty.cs", t)
 	navi.destroy_class(&empty)
-	os.remove("./Empty.cs")
+	if t.error_count == 0 {
+		os.remove("./Empty.cs")
+	}
+}
+
+@(test)
+single_string_member :: proc(t: ^test.T) {
+	foo := navi.init_class("SingleStringMember", "MonoBehaviour")
+	bar := navi.init_member(&foo, "Bar", .String, "Bar", {})
+	navi.save_class(&foo)
+	util_check_output_file("./SingleStringMember.cs", "./tests/SingleStringMember.cs", t)
+	navi.destroy_class(&foo)
+	if t.error_count == 0 {
+		os.remove("./SingleStringMember.cs")
+	}
 }
 
 util_check_output_file :: proc(outfile, testfile: string, t: ^test.T, allocator := context.temp_allocator) {

@@ -3,10 +3,11 @@ package src
 import "core:strings"
 
 Variable :: struct {
-	name:   string,
+	name:   cstring,
 	type:   string,
 	fields: []Variable,
 	value:  string,
+	node:   NodeInfo,
 }
 
 variable_declare :: proc(file: ^File_Context, var: ^Variable) -> (out: string) {
@@ -21,7 +22,7 @@ variable_declare :: proc(file: ^File_Context, var: ^Variable) -> (out: string) {
 
 	strings.write_string(&out_builder, var.type)
 	strings.write_string(&out_builder, " ")
-	strings.write_string(&out_builder, var.name)
+	strings.write_string(&out_builder, string(var.name))
 	strings.write_string(&out_builder, " = ")
 	if var.type == "string" {
 		strings.write_string(&out_builder, "\"")

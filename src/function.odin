@@ -12,7 +12,7 @@ Function :: struct {
 	exec_ins:       []^Function,
 	exec_out_count: int,
 	exec_outs:      []^Function,
-	node:      NodeInfo,
+	node:           NodeInfo,
 }
 
 function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
@@ -28,7 +28,9 @@ function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 
 	strings.write_string(&out_builder, func.name)
 	strings.write_string(&out_builder, "(")
-	strings.write_string(&out_builder, func.inputs[0].name)
+	if func.inputs[0] != nil {
+		strings.write_string(&out_builder, string(func.inputs[0].name))
+	}
 	strings.write_string(&out_builder, ");")
 
   out = strings.to_string(out_builder)

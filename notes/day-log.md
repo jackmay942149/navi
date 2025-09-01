@@ -16,20 +16,23 @@
 * Move Node
 * Enter Value
 * Connect Node
+* Select Node
 
 - Add Controls
 * Add Vector3   (v)
 * Add Debug Log (d)
 * Add Int       (i)
-* Add String    (s)
-* Add Start     (b)
+* Add String    (s) ✓
+* Add Start     (b) 
 * Add Awake     (a)
+* Save          (w)
 
 - Delete Nodes
 
 ## Day 5 - 30/08/2025
 - Fixed memory leaks
 - Started adding raylib renderer
+- Added member node
 
 ## Day 4 - 29/08/2025
 - Added File Output

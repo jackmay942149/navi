@@ -16,12 +16,21 @@ application_update :: proc(class: ^Class) {
 	for func in class.functions {
 		rl.DrawRectangle(func.node.pos.x, func.node.pos.y, 100, 100, rl.GRAY)
 	}
+	for member in class.members {
+		rl.DrawRectangle(member.node.pos.x, member.node.pos.y, 100, 100, rl.RED)
+		rl.DrawText(member.name, member.node.pos.x, member.node.pos.y, 12, rl.GRAY)
+	}
 	rl.EndDrawing()
+	application_poll_input(class)
 }
 
-/*
-	src.application_init()
-	for src.application_should_close() {
-		src.application_update()
+application_close :: proc() {
+	rl.CloseWindow()	
+}
+
+@(private)
+application_poll_input :: proc(class: ^Class) {
+	if rl.IsKeyPressed(.S) {
+		_ = init_member(class, "Hello", .String, "Hello World", {rl.GetMouseX(), rl.GetMouseY()})
 	}
-*/
+}

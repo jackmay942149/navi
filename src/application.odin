@@ -1,6 +1,7 @@
 package src
 
-import rl "vendor:raylib"
+import str "core:strings"
+import rl  "vendor:raylib"
 
 application_init :: proc(width, height: i32, title: cstring) {
 	rl.InitWindow(width, height, title)
@@ -18,7 +19,9 @@ application_update :: proc(class: ^Class) {
 	}
 	for member in class.members {
 		rl.DrawRectangle(member.node.pos.x, member.node.pos.y, 100, 100, rl.RED)
-		rl.DrawText(member.name, member.node.pos.x, member.node.pos.y, 12, rl.GRAY)
+		csr := str.clone_to_cstring(member.name, context.temp_allocator)
+		rl.DrawText(csr, member.node.pos.x, member.node.pos.y, 12, rl.GRAY)
+		free_all(context.temp_allocator)
 	}
 	rl.EndDrawing()
 	application_poll_input(class)
@@ -31,6 +34,6 @@ application_close :: proc() {
 @(private)
 application_poll_input :: proc(class: ^Class) {
 	if rl.IsKeyPressed(.S) {
-		_ = init_member(class, "Hello", .String, "Hello World", {rl.GetMouseX(), rl.GetMouseY()})
+		_ = init_member_new(class, "Hello", .String, "Hello World", {rl.GetMouseX(), rl.GetMouseY()})
 	}
 }

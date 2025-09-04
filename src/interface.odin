@@ -1,6 +1,7 @@
 package src
 
-import "core:mem"
+import mem "core:mem"
+import str "core:strings"
 
 init_class :: proc(name: string, parent: string, allocator := context.allocator) -> (class: Class) {
 	context.allocator = allocator
@@ -15,7 +16,12 @@ init_class :: proc(name: string, parent: string, allocator := context.allocator)
 	return class
 }
 
-init_member :: proc(class: ^Class, name: cstring, type: Variable_Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
+init_member :: proc {
+	init_member_new,
+	init_member_defined,
+}
+
+init_member_new :: proc(class: ^Class, name: string, type: Variable_Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.members != nil)
@@ -33,7 +39,20 @@ init_member :: proc(class: ^Class, name: cstring, type: Variable_Type, value: st
 	return var
 }
 
-add_variable :: proc(class: ^Class, type: Variable_Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
+init_member_defined :: proc(class: ^Class, name: string, def: Predefined_Type, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
+	context.allocator = allocator
+	assert(class != nil)
+	var = init_member_new(class, name, def.type, "", pos)
+	var.fields = make([]^Variable, len(def.fields))
+	for member, i in def.fields {
+		member_name := str.concatenate({var.name, ".", member.name})
+		new := add_variable(class, member.type, name = member_name, value = "", pos = {})
+		var.fields[i] = new
+	} 
+	return var
+}
+
+add_variable :: proc(class: ^Class, type: Variable_Type, value: string, pos: [2]i32, name := "", allocator := context.allocator) -> (var: ^Variable) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.variables != nil)
@@ -42,6 +61,7 @@ add_variable :: proc(class: ^Class, type: Variable_Type, value: string, pos: [2]
 	assert(var != nil)
 
 	var.type = type
+	var.name = name
 	var.value = value
 	var.node.pos = pos
 	var.is_member = false
@@ -116,6 +136,13 @@ link_variable :: proc(var: ^Variable, func: ^Function, pos: int = 0) {
 }
 
 link_output :: proc(var: ^Variable, func: ^Function) {
+	assert(var != nil)
+	assert(func != nil)
+	assert(func.output == nil)
+	func.output = var
+}
+
+link_output_field :: proc(var: ^Variable, func: ^Function, pos: int) {
 	assert(var != nil)
 	assert(func != nil)
 	assert(func.output == nil)

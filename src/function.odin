@@ -3,13 +3,13 @@ package src
 import str "core:strings"
 
 Function :: struct {
-	name, directive:                            string,
-	type:                                       FunctionType,
-	output:                                     ^Variable,
+	name, directive:     string,
+	type:                FunctionType,
+	output:              ^Variable,
+	node:                NodeInfo,
+	inputs:              []^Variable,
+	exec_ins, exec_outs: []^Function,
 	input_count, exec_in_count, exec_out_count: int,
-	node:                                       NodeInfo,
-	inputs:                                     []^Variable,
-	exec_ins, exec_outs:                        []^Function,
 }
 
 FunctionType :: enum {

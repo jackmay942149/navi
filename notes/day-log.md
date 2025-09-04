@@ -7,7 +7,6 @@
 
 # Release - v.0.2
 - Add Vulkan Rendering
-- Named Variables
 
 # Release - v.0.1 - Video Showing Various Debug.Log Creations
 - Add Rendering
@@ -31,6 +30,7 @@
 - Delete Nodes
 
 ## Day 7 - 04/09/2025
+- Added fields
 - Added template functions
 - Added binary operator functions
 

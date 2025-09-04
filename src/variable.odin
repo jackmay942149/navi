@@ -3,9 +3,9 @@ package src
 import str "core:strings"
 
 Variable :: struct {
-	name:      cstring,
+	name:      string,
 	type:      Variable_Type,
-	fields:    []Variable,
+	fields:    []^Variable,
 	value:     string,
 	node:      NodeInfo,
 	is_member: bool,

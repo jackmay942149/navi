@@ -1,41 +1,64 @@
 package src
 
 Predefined_Function :: struct {
-	name:           string,
-	directive:      string,
-	input_count:    int,
-	exec_in_count:  int,
-	exec_out_count: int,
+	name, directive:                            string,
+	type:                                       FunctionType,
+	input_count, exec_in_count, exec_out_count: int,
+}
+
+Times :: Predefined_Function {
+	name           = "*",
+	type           = .Binary,
+	input_count    = 2,
+	exec_in_count  = 1,
+	exec_out_count = 1,
 }
 
 Unity_DebugLog :: Predefined_Function {
-	name = "Debug.Log",
-	directive = "UnityEngine",
-	input_count = 1,
-	exec_in_count = 1,
+	name           = "Debug.Log",
+	directive      = "UnityEngine",
+	input_count    = 1,
+	exec_in_count  = 1,
 	exec_out_count = 1,
 }
 
 Unity_Start :: Predefined_Function {
-	name = "Start",
-	directive = "UnityEngine",
-	input_count = 0,
-	exec_in_count = 0,
+	name           = "Start",
+	directive      = "UnityEngine",
+	input_count    = 0,
+	exec_in_count  = 0,
 	exec_out_count = 1,
 }
 
 Unity_Awake :: Predefined_Function {
-	name = "Awake",
-	directive = "UnityEngine",
-	input_count = 0,
-	exec_in_count = 0,
+	name           = "Awake",
+	directive      = "UnityEngine",
+	input_count    = 0,
+	exec_in_count  = 0,
 	exec_out_count = 1,
 }
 
 Unity_Update :: Predefined_Function {
-	name = "Update",
-	directive = "UnityEngine",
-	input_count = 0,
-	exec_in_count = 0,
+	name           = "Update",
+	directive      = "UnityEngine",
+	input_count    = 0,
+	exec_in_count  = 0,
+	exec_out_count = 1,
+}
+
+Unity_Vec3Constructor :: Predefined_Function {
+	name           = "new Vector3",
+	directive      = "UnityEngine",
+	input_count    = 3,
+	exec_in_count  = 1,
+	exec_out_count = 1,
+}
+
+Unity_GetComponent :: Predefined_Function {
+	name           = "GetComponent",
+	directive      = "UnityEngine",
+	type           = .Template,
+	input_count    = 1,
+	exec_in_count  = 1,
 	exec_out_count = 1,
 }

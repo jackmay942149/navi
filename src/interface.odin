@@ -8,12 +8,14 @@ init_class :: proc(name: string, parent: string, allocator := context.allocator)
 	class.parent    = parent
 	class.functions = make([dynamic]^Function, 0, 1)
 	class.members   = make([dynamic]^Variable, 0, 1)
+	class.variables   = make([dynamic]^Variable, 0, 1)
 	assert(class.functions != nil)
 	assert(class.members != nil)
+	assert(class.variables!= nil)
 	return class
 }
 
-init_member :: proc(class: ^Class, name: cstring, type: Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
+init_member :: proc(class: ^Class, name: cstring, type: Variable_Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.members != nil)
@@ -25,8 +27,26 @@ init_member :: proc(class: ^Class, name: cstring, type: Type, value: string, pos
 	var.type = type
 	var.value = value
 	var.node.pos = pos
+	var.is_member = true
 
 	append(&class.members, var)
+	return var
+}
+
+add_variable :: proc(class: ^Class, type: Variable_Type, value: string, pos: [2]i32, allocator := context.allocator) -> (var: ^Variable) {
+	context.allocator = allocator
+	assert(class != nil)
+	assert(class.variables != nil)
+	
+	var = new(Variable)
+	assert(var != nil)
+
+	var.type = type
+	var.value = value
+	var.node.pos = pos
+	var.is_member = false
+
+	append(&class.variables, var)
 	return var
 }
 
@@ -39,7 +59,7 @@ add_function :: proc {
 	add_function_defined,
 }
 
-add_function_new :: proc(class: ^Class, name, directive: string, input_count, exec_in_count, exec_out_count: int, allocator := context.allocator) -> (func: ^Function) {
+add_function_new :: proc(class: ^Class, name, directive: string, type := FunctionType.Standard, input_count, exec_in_count, exec_out_count: int, allocator := context.allocator) -> (func: ^Function) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.functions != nil)
@@ -49,6 +69,7 @@ add_function_new :: proc(class: ^Class, name, directive: string, input_count, ex
 	
 	func.name = name
 	func.directive = directive
+	func.type = type
 	func.input_count = input_count
 
 	err: mem.Allocator_Error
@@ -70,7 +91,7 @@ add_function_new :: proc(class: ^Class, name, directive: string, input_count, ex
 add_function_defined :: proc(class: ^Class, def: Predefined_Function, allocator := context.allocator) -> (func: ^Function){
 	context.allocator = allocator
 	using def
-	return add_function_new(class, name, directive, input_count, exec_in_count, exec_out_count)
+	return add_function_new(class, name, directive, type, input_count, exec_in_count, exec_out_count)
 }
 
 link_function :: proc(from: ^Function, to: ^Function) {
@@ -85,13 +106,20 @@ link_function :: proc(from: ^Function, to: ^Function) {
 	to.exec_ins[0] = from
 }
 
-link_variable :: proc(var: ^Variable, func: ^Function) {
+link_variable :: proc(var: ^Variable, func: ^Function, pos: int = 0) {
 	assert(var != nil)
 	assert(func != nil)
 	assert(func.inputs != nil)
-	assert(len(func.inputs) > 0)
+	assert(len(func.inputs) > pos)
 
-	func.inputs[0] = var
+	func.inputs[pos] = var
+}
+
+link_output :: proc(var: ^Variable, func: ^Function) {
+	assert(var != nil)
+	assert(func != nil)
+	assert(func.output == nil)
+	func.output = var
 }
 
 save_class :: proc(class: ^Class) {

@@ -6,6 +6,7 @@ Class :: struct {
 	name:      string,
 	parent:    string,
 	members:   [dynamic]^Variable,
+	variables: [dynamic]^Variable,
 	functions: [dynamic]^Function,
 }
 

@@ -1,6 +1,6 @@
 package src
 
-Type :: enum {
+Variable_Type :: enum {
 	String,
 	Int,
 	Float,
@@ -8,7 +8,7 @@ Type :: enum {
 	Rigidbody,
 }
 
-Type_As_String := [?]string {
+Variable_Type_As_String := [?]string {
 	"string",
 	"int",
 	"float",

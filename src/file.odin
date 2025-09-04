@@ -63,7 +63,7 @@ file_add_class :: proc(class: ^Class) {
 			for decl, j in req_declares {
 				if decl == decl_to_add {
 					break
-				} else if j == len(req_declares) - 1{
+				} else if j == len(req_declares) - 1 {
 					req_declares[i] = function_directive(func) // Add if not
 				}
 			}

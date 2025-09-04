@@ -9,8 +9,9 @@
 - Add Vulkan Rendering
 - Named Variables
 
-# Release - v.0.1
+# Release - v.0.1 - Video Showing Various Debug.Log Creations
 - Add Rendering
+- Open Class with args
 
 - Point and Click Context
 * Move Node
@@ -28,6 +29,10 @@
 * Save          (w)
 
 - Delete Nodes
+
+## Day 7 - 04/09/2025
+- Added template functions
+- Added binary operator functions
 
 ## Day 6 - 01/09/2025
 - Added better e2e testing

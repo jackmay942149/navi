@@ -55,7 +55,9 @@ file_add_class :: proc(class: ^Class) {
 	defer file_close(&file)
 
 	// Add using declarations
-	req_declares := make([]string, len(class.functions))
+	req_declares := make([]string, len(class.functions) + 1)
+	temp := "using UnityEngine;"
+	req_declares[0] =  temp // TODO: add required declares to class as monobehaviour requires this
 	for &func, i in class.functions {
 		if func.directive != "" {
 			// Check to see if declare is already given
@@ -64,7 +66,7 @@ file_add_class :: proc(class: ^Class) {
 				if decl == decl_to_add {
 					break
 				} else if j == len(req_declares) - 1 {
-					req_declares[i] = function_directive(func) // Add if not
+					req_declares[i+1] = function_directive(func) // Add if not
 				}
 			}
 		}

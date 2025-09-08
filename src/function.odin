@@ -6,7 +6,7 @@ Function :: struct {
 	name, directive:     string,
 	type:                FunctionType,
 	output:              ^Variable,
-	node:                NodeInfo,
+	using node:          Node,
 	inputs:              []^Variable,
 	exec_ins, exec_outs: []^Function,
 	input_count, exec_in_count, exec_out_count: int,

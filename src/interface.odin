@@ -33,6 +33,7 @@ init_member_new :: proc(class: ^Class, name: string, type: Variable_Type, value:
 	var.type = type
 	var.value = value
 	var.node.pos = pos
+	var.variant = var
 	var.is_member = true
 
 	append(&class.members, var)
@@ -79,7 +80,15 @@ add_function :: proc {
 	add_function_defined,
 }
 
-add_function_new :: proc(class: ^Class, name, directive: string, type := FunctionType.Standard, input_count, exec_in_count, exec_out_count: int, allocator := context.allocator) -> (func: ^Function) {
+add_function_new :: proc(
+class: ^Class,
+name, directive: string,
+type := FunctionType.Standard,
+input_count, exec_in_count, exec_out_count: int,
+position : [2]i32 = {0, 0},
+allocator := context.allocator,
+) -> (
+func: ^Function) {
 	context.allocator = allocator
 	assert(class != nil)
 	assert(class.functions != nil)
@@ -91,6 +100,8 @@ add_function_new :: proc(class: ^Class, name, directive: string, type := Functio
 	func.directive = directive
 	func.type = type
 	func.input_count = input_count
+	func.pos = position
+	func.variant = func
 
 	err: mem.Allocator_Error
 	func.inputs, err = make([]^Variable, input_count)
@@ -108,10 +119,10 @@ add_function_new :: proc(class: ^Class, name, directive: string, type := Functio
 	return func
 }
 
-add_function_defined :: proc(class: ^Class, def: Predefined_Function, allocator := context.allocator) -> (func: ^Function){
+add_function_defined :: proc(class: ^Class, def: Predefined_Function, position : [2]i32 = {0, 0}, allocator := context.allocator) -> (func: ^Function) {
 	context.allocator = allocator
 	using def
-	return add_function_new(class, name, directive, type, input_count, exec_in_count, exec_out_count)
+	return add_function_new(class, name, directive, type, input_count, exec_in_count, exec_out_count, position)
 }
 
 link_function :: proc(from: ^Function, to: ^Function) {

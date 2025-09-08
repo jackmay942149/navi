@@ -3,12 +3,12 @@ package src
 import str "core:strings"
 
 Variable :: struct {
-	name:      string,
-	type:      Variable_Type,
-	fields:    []^Variable,
-	value:     string,
-	node:      NodeInfo,
-	is_member: bool,
+	name:       string,
+	type:       Variable_Type,
+	fields:     []^Variable,
+	value:      string,
+	using node: Node,
+	is_member:  bool,
 }
 
 @(private)

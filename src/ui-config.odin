@@ -10,14 +10,24 @@ import rl "vendor:raylib"
 @(private = "file") color_dark2 ::  rl.Color{   0,    0,   0, 255} 
 
 // Set Colours
-color_bg        :: color_light2
-color_font      :: color_dark2
+color_bg               :: color_accent
+color_font             :: color_accent
+color_font_member      :: color_dark2
+color_font_func        :: color_dark1
 
-color_member_bg      :: color_accent
-color_member_outline :: color_dark2
+color_member_bg             :: color_light1
+color_member_outline        :: color_light1
+color_member_output_outline :: color_dark2
+color_member_output_filled  :: color_light1
+color_member_to_func_line   :: color_light1
 
-color_func_bg :: color_dark1
-color_func_outline :: color_light2
+color_func_bg            :: color_dark2
+color_func_outline       :: color_dark2
+color_func_exec_outline  :: color_accent
+color_func_exec_filled   :: color_accent
+color_func_exec_line     :: color_dark2
+color_func_input_outline :: color_dark1
+color_func_input_filled  :: color_light1
 
 // Sizes
 size_font :: 20
@@ -26,11 +36,13 @@ size_segments :: 4
 size_member_output :: 8
 size_member_roundedness :: 2
 
-size_func_output :: 8
+size_func_output :: 12
+size_func_exec :: 12
+size_func_input :: 8
 size_func_roundedness :: 0.1
 
 // Offsets
 offset_member_out :: [2]i32{80, 15}
-offset_func_in :: [2]i32{20, 60}
+offset_func_in :: [2]i32{20, 65}
 offset_exec_in :: [2]i32{20, 40}
 offset_exec_out :: [2]i32{180, 15}

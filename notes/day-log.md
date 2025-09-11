@@ -5,29 +5,42 @@
 ## Day
 - Item
 
-# Release - v.0.2
-- Add Vulkan Rendering
-
-# Release - v.0.1 - Video Showing Various Debug.Log Creations
-- Add Rendering
+# Release - v.0.2 - Rigidbody Controller Video
 - Open Class with args
-
-- Point and Click Context
-* Move Node
-* Enter Value
-* Connect Node
-* Select Node
-
+* Enter Value Selection Context
 - Add Controls
 * Add Vector3   (v)
-* Add Debug Log (d)
+* Add Debug Log (d) ✓
 * Add Int       (i)
 * Add String    (s) ✓
-* Add Start     (b) 
+* Add Start     (b) ✓
 * Add Awake     (a)
-* Save          (w)
-
+- Split Node
+* Searchable Nodes
+* Ordered Rendering
+* Colour Variations
 - Delete Nodes
+- Dll Unity
+- Grouping Node
+- Look into autoformatting
+- Alternative to previews
+
+# Release - v.0.1 - Video Showing Various Debug.Log Creations
+https://www.youtube.com/watch?v=Bim7OFi7BeQ
+
+## Day 10 - 11/09/2025
+- Color changes
+
+## Day 9 - 09/09/2025
+- Did presention
+
+## Day 8 - 08/09/2025
+- Added Raylib rendering features
+- Added start node
+- Added debuglog node
+- Added string members
+- Added connecting nodes
+- Added moving nodes
 
 ## Day 7 - 04/09/2025
 - Added fields

@@ -1,9 +1,30 @@
 package src
 
+@(rodata)
+Available_Types := []Predefined_Type {
+	CSharp_String,
+	CSharp_Int,
+	CSharp_Float,
+	Unity_Vector3f,
+	Unity_Rigidbody,
+}
+
 Predefined_Type :: struct {
 	name:   string,
 	type:   Variable_Type,
 	fields: []Predefined_Type,
+}
+
+CSharp_String :: Predefined_Type {
+	type = .String
+}
+
+CSharp_Float :: Predefined_Type {
+	type = .Float,
+}
+
+CSharp_Int :: Predefined_Type {
+	type = .Int,
 }
 
 Unity_FloatX :: Predefined_Type {

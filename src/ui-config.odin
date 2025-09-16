@@ -26,20 +26,27 @@ color_func_outline       :: color_dark2
 color_func_exec_outline  :: color_accent
 color_func_exec_filled   :: color_accent
 color_func_exec_line     :: color_dark2
-color_func_input_outline :: color_dark1
+color_func_input_outline :: color_light1
 color_func_input_filled  :: color_light1
 
+color_inspector_bg         :: color_light1
+color_inspector_member_add :: color_dark2
+
 // Sizes
+size_window_width :: 1800
+size_window_height :: 900
 size_font :: 20
 size_segments :: 4
 
-size_member_output :: 8
+size_member_output :: 10
 size_member_roundedness :: 2
 
 size_func_output :: 12
 size_func_exec :: 12
 size_func_input :: 8
 size_func_roundedness :: 0.1
+
+size_inspector_width :: 400
 
 // Offsets
 offset_member_out :: [2]i32{80, 15}

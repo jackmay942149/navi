@@ -1,5 +1,16 @@
 package src
 
+@(rodata)
+Available_Functions := []Predefined_Function {
+	Times,
+	Unity_DebugLog,
+	Unity_Start,
+	Unity_Awake,
+	Unity_Update,
+	Unity_Vec3Constructor,
+	Unity_GetComponent,
+}
+
 Predefined_Function :: struct {
 	name, directive:                            string,
 	type:                                       FunctionType,

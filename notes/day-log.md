@@ -5,25 +5,29 @@
 ## Day
 - Item
 
-# Release - v.0.2 - Rigidbody Controller Video
-- Open Class with args
-* Enter Value Selection Context
-- Add Controls
-* Add Vector3   (v)
-* Add Debug Log (d) ✓
-* Add Int       (i)
-* Add String    (s) ✓
-* Add Start     (b) ✓
-* Add Awake     (a)
-- Split Node
-* Searchable Nodes
-* Ordered Rendering
-* Colour Variations
-- Delete Nodes
-- Dll Unity
+# User Suggestions
 - Grouping Node
 - Look into autoformatting
 - Alternative to previews
+- Dll Unity
+
+# Release - v.0.2 - Rigidbody Controller Video
+- Class Name
+- Split Node
+- Searchable Nodes
+- Ordered Rendering
+- Delete Nodes
+- Member Adjustment
+- Set Node
+- Function Outputs
+
+# Day 12 - 17/09/2025
+- Fixed node teleoprt issue
+- Reorganised functions and inspector logic
+
+# Day 11 - 16/09/2025
+- Added member inspector
+- Added function and member adder
 
 # Release - v.0.1 - Video Showing Various Debug.Log Creations
 https://www.youtube.com/watch?v=Bim7OFi7BeQ

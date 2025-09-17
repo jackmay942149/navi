@@ -17,9 +17,12 @@
 - Searchable Nodes
 - Ordered Rendering
 - Delete Nodes
-- Member Adjustment
+- Member Adjustment Edit Button
 - Set Node
 - Function Outputs
+- Fix multiply node
+- Add addition, division, subtraction
+- Fix GetComponent Node
 
 # Day 12 - 17/09/2025
 - Fixed node teleoprt issue

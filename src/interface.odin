@@ -29,11 +29,12 @@ init_member_new :: proc(class: ^Class, name: string, type: Variable_Type, value:
 	var = new(Variable)
 	assert(var != nil)
 
-	var.name = name
-	var.type = type
-	var.value = value
-	var.node.pos = pos
-	var.variant = var
+	var.name      = name
+	var.type      = type
+	var.value     = value
+	var.node.pos  = pos
+	var.size      = {size_member_w, size_member_h}
+	var.variant   = var
 	var.is_member = true
 
 	append(&class.members, var)
@@ -101,6 +102,7 @@ func: ^Function) {
 	func.type = type
 	func.input_count = input_count
 	func.pos = position
+	func.size = {size_func_w, size_func_h}
 	func.variant = func
 
 	err: mem.Allocator_Error

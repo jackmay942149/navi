@@ -33,23 +33,27 @@ color_inspector_bg         :: color_light1
 color_inspector_member_add :: color_dark2
 
 // Sizes
-size_window_width :: 1800
+size_window_width  :: 1800
 size_window_height :: 900
-size_font :: 20
-size_segments :: 4
+size_font          :: 20
+size_segments      :: 4
 
-size_member_output :: 10
+size_member_w           :: 100
+size_member_h           :: 30
+size_member_output      :: 10
 size_member_roundedness :: 2
 
-size_func_output :: 12
-size_func_exec :: 12
-size_func_input :: 8
+size_func_w           :: 200
+size_func_h           :: 100
+size_func_output      :: 12
+size_func_exec        :: 12
+size_func_input       :: 8
 size_func_roundedness :: 0.1
 
 size_inspector_width :: 400
 
 // Offsets
 offset_member_out :: [2]i32{80, 15}
-offset_func_in :: [2]i32{20, 65}
-offset_exec_in :: [2]i32{20, 40}
-offset_exec_out :: [2]i32{180, 15}
+offset_func_in    :: [2]i32{20, 65}
+offset_exec_in    :: [2]i32{20, 40}
+offset_exec_out   :: [2]i32{180, 15}

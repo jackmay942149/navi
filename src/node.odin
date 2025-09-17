@@ -3,13 +3,14 @@ package src
 Node :: struct {
 	pos:   [2]i32,
 	color: [3]i32,
+	size:  [2]i32,
 	variant: union{^Variable, ^Function},
 }
 
 node_move :: proc(node: ^Node, x,y : i32) {
 	assert(node != nil)
-	node.pos.x = x
-	node.pos.y = y
+	node.pos.x = x - node.size.x/2
+	node.pos.y = y - node.size.y/2
 }
 
 node_get_member_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {

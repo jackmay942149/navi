@@ -54,6 +54,7 @@ application_update :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 	for func in class.functions {
 		application_draw_function(func)
 	}
+	application_draw_lines(class)
 	application_draw_inspector(app_input_ctx)
 	rl.EndDrawing()
 }
@@ -66,68 +67,114 @@ application_close :: proc() {
 application_draw_member :: proc(member: ^Variable) {
 	assert(member != nil)
 	rec := rl.Rectangle{f32(member.pos.x), f32(member.pos.y), 100, 30}
-	rl.DrawRectangleRounded(rec, size_member_roundedness, size_segments, color_member_bg) // Node BG
-	rl.DrawRectangleRoundedLinesEx(
-		rec,
-		size_member_roundedness,
-		size_segments,
-		2,
-		color_member_outline,
-	) // Node Outline
-	rl.DrawCircleLines(
-		member.pos.x + 80,
-		member.pos.y + 15,
-		size_member_output,
-		color_member_output_outline,
-	) // Output Node
+	round: f32 = size_member_roundedness
+	seg:   i32 = size_segments
+
+	// Node BG
+	col := color_member_bg
+	rl.DrawRectangleRounded(rec, round, seg, col) 
+
+	// Node Outline
+	col = color_member_outline
+	rl.DrawRectangleRoundedLinesEx(rec, round, seg, 2, col)
+
+	// Output Pin
+	member_out_pos := node_get_member_pos_i32(member)
+	col = color_member_output_outline
 	node_identifier := Variable_Type_Id[member.type]
-	rl.DrawText(node_identifier, member.pos.x + 73, member.pos.y + 10, size_font / 2, color_font_member) // Output Type
-	csr := str.clone_to_cstring(member.name, context.temp_allocator)
-	rl.DrawText(csr, member.node.pos.x + 10, member.node.pos.y + 5, size_font, color_font_member) // Name
+	rl.DrawCircleLines(member_out_pos.x, member_out_pos.y, size_member_output, col) 
+
+	// Output Identifier
+	col = color_font_member
+	rl.DrawText(node_identifier, member_out_pos.x - 7, member_out_pos.y - 5, size_font / 2, col) 
+
+	// Member Name
+	cst := str.clone_to_cstring(member.name, context.temp_allocator)
+	col = color_font_member
+	rl.DrawText(cst, member.node.pos.x + 10, member.node.pos.y + 5, size_font, col) 
 	free_all(context.temp_allocator)
 	return
 }
 
 application_draw_function :: proc(func: ^Function) {
 	assert(func != nil)
-	rec := rl.Rectangle{f32(func.pos.x), f32(func.pos.y), 200, 100}
-	rl.DrawRectangleRounded(rec, size_func_roundedness, size_segments, color_func_bg) // Node BG
-	rl.DrawRectangleRoundedLinesEx(rec,	size_func_roundedness, size_segments,	2,	color_func_outline) // Node Outline
-	rl.DrawCircleLines(func.pos.x + 180, func.pos.y + 15, size_func_exec, color_func_exec_outline) // Node Output
+
+	// Node BG
+	rec := rl.Rectangle{f32(func.pos.x), f32(func.pos.y), f32(func.node.size.x), f32(func.node.size.y)}
+	round: f32 = size_func_roundedness
+	seg: i32 = size_segments
+	col := color_func_bg
+	rl.DrawRectangleRounded(rec, round, seg, col)
+
+	// Node Outline
+	col = color_func_outline
+	rl.DrawRectangleRoundedLinesEx(rec,	round, seg,	2,	col)
+
+	// Exec Out Pin
+	pos := node_get_exec_out_pos_i32(func)
+	col = color_func_exec_outline
+	rl.DrawCircleLines(pos.x, pos.y, size_func_exec, col)
+
+	// Exec In Pin
+	pos = node_get_exec_in_pos_i32(func)
+	col = color_func_exec_outline
 	if func.exec_in_count == 1 {
-		rl.DrawCircleLines(func.pos.x + 20, func.pos.y + 40, size_func_exec, color_func_exec_outline) // Node Exec Input
+		rl.DrawCircleLines(pos.x, pos.y, size_func_exec, col)
 	}
+
+	// Function Inputs
 	if func.input_count > 0 {
-		input_pos := node_get_input_in_pos_f32(func, 0)
-		rl.DrawCircleLines(i32(input_pos.x), i32(input_pos.y), size_func_input, color_func_input_outline) // Node Inputs
-		for input in func.inputs {
+		for input, i in func.inputs {
+			pos := node_get_input_in_pos_i32(func, i)
+			col = color_func_input_outline
+			rl.DrawCircleLines(pos.x, pos.y, size_func_input, col)
+		}
+	}
+
+	// Function Name
+	col = color_font
+	csr := str.clone_to_cstring(func.name, context.temp_allocator)
+	rl.DrawText(csr, func.pos.x + 10, func.node.pos.y + 5, size_font, col)
+	free_all(context.temp_allocator)
+	return
+}
+
+application_draw_lines :: proc(class: ^Class) {
+	assert(class != nil)
+
+	for func in class.functions {
+		// Function Inputs
+		for input, i in func.inputs {
 			if input == nil {
 				continue
 			}
-			member_pos := node_get_member_pos_f32(input)
-			rl.DrawCircle(i32(input_pos.x), i32(input_pos.y), size_func_input, color_func_input_filled)
-			rl.DrawLineBezier(input_pos, member_pos, 2, color_member_to_func_line)
-			rl.DrawCircle(i32(member_pos.x), i32(member_pos.y), size_member_output + 1, color_member_output_filled)
+
+			// Input Filled
+			member_pos := node_get_member_pos_i32(input)
+			input_pos := node_get_input_in_pos_i32(func, i)
+			col := color_func_input_filled
+			rl.DrawCircle(input_pos.x, input_pos.y, size_func_input, col)
+
+			// Member Filled
+			col = color_member_output_filled
+			rl.DrawCircle(member_pos.x, member_pos.y, size_member_output + 1, col)
+
+			// Line Between
+			col = color_member_to_func_line
+			member_pos_f32 := node_get_member_pos_f32(input)
+			input_pos_f32 := node_get_input_in_pos_f32(func, i)
+			rl.DrawLineBezier(input_pos_f32, member_pos_f32, 2, col)
+		}
+
+		// Function Exec lines
+		if func.exec_outs[0] != nil {
+			exec_out_pos := node_get_exec_out_pos_f32(func)
+			exec_in_pos := node_get_exec_in_pos_f32(func.exec_outs[0])
+			rl.DrawLineBezier(exec_in_pos, exec_out_pos, 2,	color_func_exec_line)
+			rl.DrawCircle(i32(exec_in_pos.x), i32(exec_in_pos.y), size_func_exec, color_func_exec_filled)
+			rl.DrawCircle(i32(exec_out_pos.x), i32(exec_out_pos.y), size_func_exec, color_func_exec_filled)
 		}
 	}
-	if func.exec_outs[0] != nil {
-		exec_out_pos := node_get_exec_out_pos_f32(func)
-		exec_in_pos := node_get_exec_in_pos_f32(func.exec_outs[0])
-		rl.DrawLineBezier(exec_in_pos, exec_out_pos, 2,	color_func_exec_line)
-		rl.DrawCircle(i32(exec_in_pos.x), i32(exec_in_pos.y), size_func_exec, color_func_exec_filled)
-		rl.DrawCircle(i32(exec_out_pos.x), i32(exec_out_pos.y), size_func_exec, color_func_exec_filled)
-	}
-	if func.exec_ins != nil && func.exec_ins[0] != nil {
-		exec_out_pos := node_get_exec_out_pos_f32(func.exec_ins[0])
-		exec_in_pos := node_get_exec_in_pos_f32(func)
-		rl.DrawLineBezier(exec_in_pos, exec_out_pos, 2,	color_func_exec_line)
-		rl.DrawCircle(i32(exec_in_pos.x), i32(exec_in_pos.y), size_func_exec, color_func_exec_filled)
-		rl.DrawCircle(i32(exec_out_pos.x), i32(exec_out_pos.y), size_func_exec, color_func_exec_filled)
-	}
-	csr := str.clone_to_cstring(func.name, context.temp_allocator)
-	rl.DrawText(csr, func.pos.x + 10, func.node.pos.y + 5, size_font, color_font) // Name
-	free_all(context.temp_allocator)
-	return
 }
 
 application_draw_inspector :: proc(app_input_ctx: ^App_Input_Ctx) {

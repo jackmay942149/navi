@@ -44,7 +44,7 @@ size_member_output      :: 10
 size_member_roundedness :: 2
 
 size_func_w           :: 200
-size_func_h           :: 100
+size_func_h           :: 120
 size_func_output      :: 12
 size_func_exec        :: 12
 size_func_input       :: 8

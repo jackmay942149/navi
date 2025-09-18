@@ -20,9 +20,11 @@
 - Member Adjustment Edit Button
 - Set Node
 - Function Outputs
-- Fix multiply node
 - Add addition, division, subtraction
 - Fix GetComponent Node
+
+# Day 13 - 18/09/2025
+- Refactored drawing and fixed vector constructor and multiply nodes
 
 # Day 12 - 17/09/2025
 - Fixed node teleoprt issue

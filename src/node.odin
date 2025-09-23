@@ -11,6 +11,16 @@ node_move :: proc(node: ^Node, x,y : i32) {
 	assert(node != nil)
 	node.pos.x = x - node.size.x/2
 	node.pos.y = y - node.size.y/2
+	if x > size_window_width - size_inspector_width - node.size.x/2 {
+		node.pos.x = size_window_width - size_inspector_width - node.size.x
+	} else if x < node.size.x/2 {
+		node.pos.x = 0
+	}
+	if node.pos.y < 0 {
+		node.pos.y = 0
+	} else if y > size_window_height - node.size.y/2 {
+		node.pos.y = size_window_height - node.size.y
+	}
 }
 
 node_get_member_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {

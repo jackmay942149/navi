@@ -58,6 +58,9 @@ application_update :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 	for func in class.functions {
 		application_draw_function(func)
 	}
+	for split in class.splits {
+		application_draw_split(split)
+	}
 	application_draw_lines(class)
 	application_draw_inspector(app_input_ctx)
 	rl.EndDrawing()
@@ -149,6 +152,15 @@ application_draw_function :: proc(func: ^Function) {
 		rl.DrawCircleLines(pos.x, pos.y, size_func_input, color_func_ouput_outline)
 	}
 	return
+}
+
+application_draw_split :: proc(split: ^Split) {
+	assert(split != nil)
+	
+	rl.DrawRectangle(split.pos.x, split.pos.y, split.size.x, split.size.y, color_split_bg)
+
+	// Draw in
+	rl.DrawCircleLines(split.pos.x + 10, split.pos.y + 10, size_split_pin, color_split_pin)
 }
 
 application_draw_lines :: proc(class: ^Class) {

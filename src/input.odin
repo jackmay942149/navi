@@ -22,6 +22,9 @@ input_poll :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 	if app_input_ctx.select_type == .Change_Value {
 		change_value(app_input_ctx.selected_node)
 	}
+	if rl.IsMouseButtonPressed(.RIGHT) {
+		split_add(class)
+	}
 	if !rl.IsMouseButtonDown(.LEFT) {
 		return
 	}
@@ -185,6 +188,18 @@ select_inspector :: proc(mouse_pos: [2]f32) -> (selected: bool, new_state: Selec
 		return true, .Inspector
 	}
 	return false, .Whole_Node
+}
+
+@(private="file")
+select_split :: proc(class: ^Class) {
+	assert(class != nil)
+	for split in class.splits {
+		rec := rl.Rectangle {
+			x = split.pos.x,
+			y = split.pos.y,
+			width = // TODO: Resume here
+		}
+	}
 }
 
 @(private)

@@ -16,13 +16,12 @@
 - Split Node
 - Delete Nodes
 - Set Node
-- Function Outputs
 - Fix GetComponent Node
 
 - Class name
-- Add output
 - Fix GetComponent
 - Split Node
+- Check name of fields when name is changed at runtime
 
 # Day 14 - 23/09/2025
 - Add member adjustments

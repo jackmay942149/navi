@@ -8,6 +8,7 @@ Class :: struct {
 	members:   [dynamic]^Variable,
 	variables: [dynamic]^Variable,
 	functions: [dynamic]^Function,
+	splits:    [dynamic]^Split,
 }
 
 @(private)

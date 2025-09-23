@@ -102,7 +102,6 @@ Unity_GetComponent :: Predefined_Function {
 	name           = "GetComponent",
 	directive      = "UnityEngine",
 	type           = .Template,
-	input_count    = 1,
 	exec_in_count  = 1,
 	exec_out_count = 1,
 	has_output     = true,

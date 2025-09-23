@@ -47,8 +47,9 @@ init_member_defined :: proc(class: ^Class, name: string, def: Predefined_Type, p
 	var = init_member_new(class, name, def.type, "", pos)
 	var.fields = make([]^Variable, len(def.fields))
 	for member, i in def.fields {
-		member_name := str.concatenate({var.name, ".", member.name})
-		new := add_variable(class, member.type, name = member_name, value = "", pos = {})
+		new := add_variable(class, member.type, "", name = member.name, pos = {})
+		new.is_member = true
+		new.parent_name = var.name
 		var.fields[i] = new
 	} 
 	return var

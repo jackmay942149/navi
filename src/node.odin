@@ -4,7 +4,7 @@ Node :: struct {
 	pos:   [2]i32,
 	color: [3]i32,
 	size:  [2]i32,
-	variant: union{^Variable, ^Function},
+	variant: union{^Variable, ^Function, ^Split},
 }
 
 node_move :: proc(node: ^Node, x,y : i32) {
@@ -73,3 +73,22 @@ node_get_output_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
 	return node_get_input_in_pos_i32(node, node.variant.(^Function).input_count + 1)
 }
 
+node_get_split_in_pos_f32 :: proc(node: ^Node) -> (pos: [2]f32) {
+	assert(node != nil)
+	return {f32(node.pos.x) + 10, f32(node.pos.y) + 10}
+}
+
+node_get_split_in_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
+	assert(node != nil)
+	return {i32(node.pos.x) + 10, i32(node.pos.y) + 10}
+}
+
+node_get_split_out_pos_f32 :: proc(node: ^Node, i: int) -> (pos: [2]f32) {
+	assert(node != nil)
+	return {f32(node.pos.x) + 90, f32(node.pos.y) + 10 + 25 * f32(i)}
+}
+
+node_get_split_out_pos_i32 :: proc(node: ^Node, i: int) -> (pos: [2]i32) {
+	assert(node != nil)
+	return {i32(node.pos.x) + 90, i32(node.pos.y) + 10  + 25 * i32(i)}
+}

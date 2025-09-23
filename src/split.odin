@@ -1,8 +1,9 @@
 package src
 
 Split :: struct {
-	variable:   ^Variable,
-	using node: Node,
+	variable:     ^Variable,
+	linked_funcs: [dynamic]^Function,
+	using node:   Node,
 }
 
 split_add :: proc(class: ^Class) {
@@ -14,4 +15,5 @@ split_add :: proc(class: ^Class) {
 
 	split.size.x = 100
 	split.size.y = 100
+	split.variant = split
 }

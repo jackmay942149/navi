@@ -4,11 +4,13 @@ import str "core:strings"
 
 Variable :: struct {
 	name:       string,
+	parent_name: string,
 	type:       Variable_Type,
 	fields:     []^Variable,
 	value:      string,
 	using node: Node,
 	is_member:  bool,
+	is_split:   bool,
 }
 
 @(private)

@@ -6,6 +6,20 @@ import fmt  "core:fmt"
 import test "core:testing"
 
 @(test)
+debug_vector :: proc(t: ^test.T) {
+	class := navi.init_class("DebugVector", "MonoBehaviour")
+	m_vec := navi.init_member(&class, "temp", navi.Unity_Vector3f, {})
+	f_start := navi.add_function(&class, navi.Unity_Start)
+	f_debug := navi.add_function(&class, navi.Unity_DebugLog)
+
+	navi.link_function(f_start, f_debug)
+	navi.link_variable(m_vec.fields[2], f_debug)
+
+	navi.save_class(&class)
+	navi.destroy_class(&class)
+}
+
+@(test)
 rigidbody_example :: proc(t: ^test.T) {
 	class             := navi.init_class("Vector3CtorExample", "MonoBehaviour")	
 	m_vec             := navi.init_member(&class, "m_YDirectionVector", navi.Unity_Vector3f, {})

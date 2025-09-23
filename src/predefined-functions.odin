@@ -12,6 +12,7 @@ Available_Functions := []Predefined_Function {
 	Unity_Update,
 	Unity_Vec3Constructor,
 	Unity_GetComponent,
+	Unity_AddComponent,
 }
 
 Predefined_Function :: struct {
@@ -100,6 +101,15 @@ Unity_Vec3Constructor :: Predefined_Function {
 
 Unity_GetComponent :: Predefined_Function {
 	name           = "GetComponent",
+	directive      = "UnityEngine",
+	type           = .Template,
+	exec_in_count  = 1,
+	exec_out_count = 1,
+	has_output     = true,
+}
+
+Unity_AddComponent :: Predefined_Function {
+	name           = "AddComponent",
 	directive      = "UnityEngine",
 	type           = .Template,
 	exec_in_count  = 1,

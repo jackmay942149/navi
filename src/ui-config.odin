@@ -40,8 +40,9 @@ color_inspector_member_add :: color_dark2
 color_inspector_edit_bg   :: color_dark2
 color_inspector_edit_font :: color_accent
 
-color_split_bg :: color_dark2
-color_split_pin :: color_accent
+color_split_bg   :: color_dark2
+color_split_pin  :: color_accent
+color_split_font :: color_accent
 
 // Sizes
 size_window_width  :: 1800

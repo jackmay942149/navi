@@ -2,6 +2,7 @@ package src
 
 import fmt "core:fmt"
 import rl  "vendor:raylib"
+import str "core:strings"
 
 @(private)
 input_poll :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
@@ -30,7 +31,7 @@ input_poll :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 	}
 
 	#partial switch app_input_ctx.select_type {
-	case .Whole_Node, .Member_Add, .Function_Add, .Whole_Member, .Whole_Function:	{
+	case .Whole_Node, .Member_Add, .Function_Add, .Whole_Member, .Whole_Function, .Split_Node:	{
 		node_move(app_input_ctx.selected_node, mouse_pos.x, mouse_pos.y)
 	}
 	case .Member_Out:	{
@@ -47,6 +48,10 @@ input_poll :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		pos := node_get_exec_out_pos_i32(app_input_ctx.selected_node)
 		rl.DrawLine(pos.x, pos.y, mouse_pos.x, mouse_pos.y, color_func_exec_line)
 		rl.DrawCircle(pos.x, pos.y, size_func_exec,	color_func_exec_filled)
+	}
+	case .Split_Out: {
+		pos := node_get_split_out_pos_i32(app_input_ctx.selected_node, app_input_ctx.function_input_index - 1)
+		rl.DrawLine(pos.x, pos.y, mouse_pos.x, mouse_pos.y, color_member_to_func_line)
 	}
 	}
 }
@@ -187,19 +192,37 @@ select_inspector :: proc(mouse_pos: [2]f32) -> (selected: bool, new_state: Selec
 	if rl.CheckCollisionPointRec({f32(rl.GetMouseX()), f32(rl.GetMouseY())}, rec) {
 		return true, .Inspector
 	}
-	return false, .Whole_Node
+	return false, .None
 }
 
 @(private="file")
-select_split :: proc(class: ^Class) {
+select_split :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected: bool, split: ^Node, select_type: Selection_Type, out_index: int) {
 	assert(class != nil)
-	for split in class.splits {
+	for s in class.splits {
+		pos := node_get_split_in_pos_f32(s)
+		if rl.CheckCollisionPointCircle(mouse_pos, pos, size_split_pin) {
+			return true, s, .Split_In, 0			
+		}
+
+		if s.variable != nil {
+			for f, i in s.variable.fields {
+				pos = node_get_split_out_pos_f32(s, i)
+				if rl.CheckCollisionPointCircle(mouse_pos, pos, size_split_pin) {
+					return true, s, .Split_Out, i + 1
+				}
+			}
+		}
 		rec := rl.Rectangle {
-			x = split.pos.x,
-			y = split.pos.y,
-			width = // TODO: Resume here
+			x = f32(s.pos.x),
+			y = f32(s.pos.y),
+			width = f32(s.size.x),
+			height = f32(s.size.y),
+		}
+		if rl.CheckCollisionPointRec(mouse_pos, rec) {
+			return true, s, .Split_Node, 0
 		}
 	}
+	return false, nil, .None, 0
 }
 
 @(private)
@@ -250,6 +273,16 @@ input_select :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		return
 	}
 
+	split: ^Node
+	selected, split, select_type, selected_pin = select_split(class, mouse_pos)
+	if selected {
+		app_input_ctx.select_type          = select_type
+		app_input_ctx.selected_node        = split
+		app_input_ctx.inspector_state      = .Add
+		app_input_ctx.function_input_index = selected_pin
+		return
+	}
+
 	app_input_ctx.select_type = .None
 	app_input_ctx.inspector_state = .Add
 	return 
@@ -286,7 +319,27 @@ input_deselect :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 			func := release_ctx.selected_node.variant.(^Function)
 			link_output(var, func)
 		}
+		if release_ctx.select_type == .Split_In {
+			var := app_input_ctx.selected_node.variant.(^Variable)
+			release_ctx.selected_node.variant.(^Split).variable = var
+			release_ctx.selected_node.variant.(^Split).linked_funcs = make([dynamic]^Function, len(var.fields))
+		}
 		return
+	}
+	case .Split_Out: {
+		if release_ctx.select_type == .Function_Input {
+			var := app_input_ctx.selected_node.variant.(^Split).variable.fields[app_input_ctx.function_input_index - 1]
+			func := release_ctx.selected_node.variant.(^Function)
+			var.is_split = true
+			link_variable(var, func, release_ctx.function_input_index - 1)
+		}
+		if release_ctx.select_type == .Function_Output {
+			var := app_input_ctx.selected_node.variant.(^Split).variable.fields[app_input_ctx.function_input_index - 1]
+			func := release_ctx.selected_node.variant.(^Function)
+			app_input_ctx.selected_node.variant.(^Split).linked_funcs[app_input_ctx.function_input_index-1] = func
+			var.is_split = true
+			link_output(var, func)
+		}
 	}
 	}
 }
@@ -299,6 +352,9 @@ change_name :: proc(node: ^Node) {
 	}
 	node.variant.(^Variable).name = add_letter(node.variant.(^Variable).name)
 	variable_recalculate_width(node)
+	for f in node.variant.(^Variable).fields {
+		f.parent_name = node.variant.(^Variable).name
+	}
 }
 
 @(private = "file")

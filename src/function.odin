@@ -33,6 +33,10 @@ function_call :: proc(file: ^File_Context, func: ^Function) -> (out: string) {
 
 	// Add return value
 	if func.output != nil {
+		if func.output.parent_name != "" {
+			str.write_string(&out_builder, string(func.output.parent_name))
+			str.write_string(&out_builder, ".")
+		}
 		str.write_string(&out_builder, string(func.output.name))
 		str.write_string(&out_builder, " = ")
 	}
@@ -60,14 +64,22 @@ function_call_standard :: proc(builder: ^str.Builder, func: ^Function) {
 	for var, i in func.inputs {
 		if var != nil {
 			if i != 0 {
-				str.write_string(builder, ", ")
+				str.write_string(builder, ", ") // TODO: Fix ugly if block
 				if var.is_member {
+					if var.parent_name != "" {
+						str.write_string(builder, var.parent_name)
+						str.write_string(builder, ".")
+					}
 					str.write_string(builder, string(var.name))
 				} else {
 					str.write_string(builder, variable_as_value(var))
 				}
 			} else {
 				if var.is_member {
+					if var.parent_name != "" {
+						str.write_string(builder, var.parent_name)
+						str.write_string(builder, ".")
+					}
 					str.write_string(builder, string(var.name))
 				} else {
 					str.write_string(builder, variable_as_value(var))

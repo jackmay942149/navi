@@ -13,15 +13,11 @@
 
 # Release - v.0.2 - Rigidbody Controller Video
 - Class Name
-- Split Node
 - Delete Nodes
-- Set Node
-- Fix GetComponent Node
+- Fix split issues
 
-- Class name
-- Fix GetComponent
-- Split Node
-- Check name of fields when name is changed at runtime
+# Day 15 - 24/09/2025
+- Added split node
 
 # Day 14 - 23/09/2025
 - Add member adjustments

@@ -27,6 +27,9 @@ Selection_Type :: enum {
 	Inspector,
 	Change_Name,
 	Change_Value,
+	Split_Node,
+	Split_In,
+	Split_Out,
 }
 
 @(private)
@@ -160,7 +163,19 @@ application_draw_split :: proc(split: ^Split) {
 	rl.DrawRectangle(split.pos.x, split.pos.y, split.size.x, split.size.y, color_split_bg)
 
 	// Draw in
-	rl.DrawCircleLines(split.pos.x + 10, split.pos.y + 10, size_split_pin, color_split_pin)
+	pos := node_get_split_in_pos_i32(split)
+	rl.DrawCircleLines(pos.x , pos.y, size_split_pin, color_split_pin)
+
+	// Draw Outs
+	if split.variable != nil {
+		for field, i in split.variable.fields {
+			pos := node_get_split_out_pos_i32(split, i)
+			rl.DrawCircleLines(pos.x, pos.y, size_split_pin, color_split_pin)
+			cst := str.clone_to_cstring(field.name, context.temp_allocator) // CRINGE
+			rl.DrawText(cst, pos.x - 30, pos.y - 10, size_font, color_split_font)
+			free_all(context.temp_allocator)
+		}
+	}
 }
 
 application_draw_lines :: proc(class: ^Class) {
@@ -172,6 +187,7 @@ application_draw_lines :: proc(class: ^Class) {
 			if input == nil {
 				continue
 			}
+			if input.is_split do continue
 
 			// Input Filled
 			member_pos := node_get_member_pos_i32(input)
@@ -199,12 +215,27 @@ application_draw_lines :: proc(class: ^Class) {
 			rl.DrawCircle(i32(exec_out_pos.x), i32(exec_out_pos.y), size_func_exec, color_func_exec_filled)
 		}
 
-		if func.output != nil {
+		if func.output != nil && !func.output.is_split{
 			member_pos := node_get_member_pos_f32(func.output)
 			output_pos := node_get_output_pos_f32(func)
 			rl.DrawLineBezier(member_pos, output_pos, 1, color_member_to_output_line)
 			rl.DrawCircle(i32(member_pos.x), i32(member_pos.y), size_member_output, color_member_to_out_filled)
 			rl.DrawCircle(i32(output_pos.x), i32(output_pos.y), size_func_output, color_func_output_filled)
+		}
+	}
+
+	for split in class.splits {
+		if split.variable != nil {
+			member_pos := node_get_member_pos_f32(split.variable)
+			pin_pos := node_get_split_in_pos_f32(split)
+			rl.DrawLineBezier(member_pos, pin_pos, 2, color_member_to_func_line)
+
+			for func in split.linked_funcs {
+				if func == nil do continue
+				pin_pos := split.pos
+				func_pos := func.pos
+				rl.DrawLine(pin_pos.x, pin_pos.y, func_pos.x, func_pos.y, color_member_to_func_line)
+			}
 		}
 	}
 }

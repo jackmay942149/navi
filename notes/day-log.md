@@ -21,7 +21,6 @@
 
 - Class name
 - Add output
-- Fix input 2+
 - Fix GetComponent
 - Split Node
 
@@ -29,6 +28,7 @@
 - Add member adjustments
 - Invalidated out of bounds node positions
 - Added underscore to typed input
+- Fixed multiple inputs
 
 # Day 13 - 18/09/2025
 - Refactored drawing and fixed vector constructor and multiply nodes

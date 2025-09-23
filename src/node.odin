@@ -55,7 +55,7 @@ node_get_exec_out_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
 
 node_get_input_in_pos_f32 :: proc(node: ^Node, index: int) -> (pos: [2]f32) {
 	assert(node != nil)	
-	return {f32(node.pos.x + offset_func_in.x), f32(node.pos.y + offset_func_in.y)}
+	return {f32(node.pos.x + offset_func_in.x), f32(node.pos.y + offset_func_in.y + 20 * i32(index))}
 }
 
 node_get_input_in_pos_i32 :: proc(node: ^Node, index: int) -> (pos: [2]i32) {

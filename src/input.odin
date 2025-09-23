@@ -119,7 +119,7 @@ select_member :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false, n
 }
 
 @(private = "file")
-select_function :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false, node: ^Node, type := Selection_Type.None) {
+select_function :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false, node: ^Node, type := Selection_Type.None, function_input_index := 0) {
 	assert(class != nil)
 	for func in class.functions {
 		rec := rl.Rectangle {
@@ -130,18 +130,22 @@ select_function :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false,
 		}
 
 		if rl.CheckCollisionPointRec({f32(rl.GetMouseX()), f32(rl.GetMouseY())}, rec) {
-			input_pos := node_get_input_in_pos_f32(func, 0)
 			exec_in_pos := node_get_exec_in_pos_f32(func)
 			exec_out_pos := node_get_exec_out_pos_f32(func)
 
-			if func.input_count > 0 && rl.CheckCollisionPointCircle(mouse_pos, input_pos, size_func_exec) {
-				return true, func, .Function_Input
-			} else if func.exec_in_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_in_pos, size_func_exec) {
-				return true, func, .Exec_In
-			} else if func.exec_out_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_out_pos, size_func_exec) {
-				return true, func, .Exec_Out
+			for i in 0..<func.input_count {
+				input_pos := node_get_input_in_pos_f32(func, i)
+				if rl.CheckCollisionPointCircle(mouse_pos, input_pos, size_func_input) {
+					return true, func, .Function_Input, i+1
+				}
 			}
-			return true, func, .Whole_Node
+
+			if func.exec_in_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_in_pos, size_func_exec) {
+				return true, func, .Exec_In, 0
+			} else if func.exec_out_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_out_pos, size_func_exec) {
+				return true, func, .Exec_Out, 0
+			}
+			return true, func, .Whole_Node, 0
 		}
 	}
 	return
@@ -213,11 +217,13 @@ input_select :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		return
 	}
 
-	selected, new_node, select_type = select_function(class, mouse_pos)
+	selected_pin := 0
+	selected, new_node, select_type, selected_pin = select_function(class, mouse_pos)
 	if selected {
-		app_input_ctx.select_type     = select_type
-		app_input_ctx.inspector_state = .Add
-		app_input_ctx.selected_node   = new_node
+		app_input_ctx.select_type          = select_type
+		app_input_ctx.inspector_state      = .Add
+		app_input_ctx.selected_node        = new_node
+		app_input_ctx.function_input_index = selected_pin
 		return
 	}
 
@@ -256,7 +262,7 @@ input_deselect :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		if release_ctx.select_type == .Function_Input {
 			var := app_input_ctx.selected_node.variant.(^Variable)
 			func := release_ctx.selected_node.variant.(^Function)
-			link_variable(var, func)
+			link_variable(var, func, release_ctx.function_input_index - 1)
 		}
 		return
 	}

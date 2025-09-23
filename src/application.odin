@@ -5,9 +5,10 @@ import str "core:strings"
 import rl  "vendor:raylib"
 
 App_Input_Ctx :: struct {
-	selected_node:   ^Node,
-	select_type:     Selection_Type,
-	inspector_state: Inspector_State,
+	selected_node:        ^Node,
+	select_type:          Selection_Type,
+	inspector_state:      Inspector_State,
+	function_input_index: int,
 }
 
 @(private)

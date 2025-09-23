@@ -15,8 +15,9 @@ Available_Functions := []Predefined_Function {
 }
 
 Predefined_Function :: struct {
-	name, directive:                            string,
-	type:                                       FunctionType,
+	name, directive: string,
+	type:            FunctionType,
+	has_output:      bool,
 	input_count, exec_in_count, exec_out_count: int,
 }
 
@@ -26,6 +27,7 @@ Times :: Predefined_Function {
 	input_count    = 2,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }
 
 Add :: Predefined_Function {
@@ -34,6 +36,7 @@ Add :: Predefined_Function {
 	input_count    = 2,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }
 
 Divide :: Predefined_Function {
@@ -42,6 +45,7 @@ Divide :: Predefined_Function {
 	input_count    = 2,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }
 
 Subtract :: Predefined_Function {
@@ -50,6 +54,7 @@ Subtract :: Predefined_Function {
 	input_count    = 2,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }
 
 Unity_DebugLog :: Predefined_Function {
@@ -90,6 +95,7 @@ Unity_Vec3Constructor :: Predefined_Function {
 	input_count    = 3,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }
 
 Unity_GetComponent :: Predefined_Function {
@@ -99,4 +105,5 @@ Unity_GetComponent :: Predefined_Function {
 	input_count    = 1,
 	exec_in_count  = 1,
 	exec_out_count = 1,
+	has_output     = true,
 }

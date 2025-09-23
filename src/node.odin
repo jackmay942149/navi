@@ -63,3 +63,13 @@ node_get_input_in_pos_i32 :: proc(node: ^Node, index: int) -> (pos: [2]i32) {
 	return {i32(node.pos.x + offset_func_in.x), i32(node.pos.y + offset_func_in.y + i32(20 * index))}
 }
 
+node_get_output_pos_f32 :: proc(node: ^Node) -> (pos: [2]f32) {
+	assert(node != nil)
+	return node_get_input_in_pos_f32(node, node.variant.(^Function).input_count + 1)
+}
+
+node_get_output_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
+	assert(node != nil)
+	return node_get_input_in_pos_i32(node, node.variant.(^Function).input_count + 1)
+}
+

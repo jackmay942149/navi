@@ -24,11 +24,11 @@ variable_declare :: proc(file: ^File_Context, var: ^Variable) -> (out: string) {
 	str.write_string(&out_builder, Variable_Type_As_String[var.type])
 	str.write_string(&out_builder, " ")
 	str.write_string(&out_builder, string(var.name))
-	if var.type == .String || var.type == .Float || var.type == .Int {
+	// if var.type == .String || var.type == .Float || var.type == .Int {
+	if var.value != "" {
 		str.write_string(&out_builder, " = ") // TODO: is for vec, and add function for partial switch
+		str.write_string(&out_builder, variable_as_value(var))
 	}
-
-	str.write_string(&out_builder, variable_as_value(var))
 
 	str.write_string(&out_builder, ";")
   out = str.to_string(out_builder)

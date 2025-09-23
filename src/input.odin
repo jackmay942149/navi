@@ -130,9 +130,6 @@ select_function :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false,
 		}
 
 		if rl.CheckCollisionPointRec({f32(rl.GetMouseX()), f32(rl.GetMouseY())}, rec) {
-			exec_in_pos := node_get_exec_in_pos_f32(func)
-			exec_out_pos := node_get_exec_out_pos_f32(func)
-
 			for i in 0..<func.input_count {
 				input_pos := node_get_input_in_pos_f32(func, i)
 				if rl.CheckCollisionPointCircle(mouse_pos, input_pos, size_func_input) {
@@ -140,10 +137,15 @@ select_function :: proc(class: ^Class, mouse_pos: [2]f32) -> (selected := false,
 				}
 			}
 
+			exec_in_pos := node_get_exec_in_pos_f32(func)
+			exec_out_pos := node_get_exec_out_pos_f32(func)
+			output_pos := node_get_output_pos_f32(func)
 			if func.exec_in_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_in_pos, size_func_exec) {
 				return true, func, .Exec_In, 0
 			} else if func.exec_out_count == 1 && rl.CheckCollisionPointCircle(mouse_pos, exec_out_pos, size_func_exec) {
 				return true, func, .Exec_Out, 0
+			} else if func.has_output && rl.CheckCollisionPointCircle(mouse_pos, output_pos, size_func_output) {
+				return true, func, .Function_Output, 0
 			}
 			return true, func, .Whole_Node, 0
 		}
@@ -263,6 +265,11 @@ input_deselect :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 			var := app_input_ctx.selected_node.variant.(^Variable)
 			func := release_ctx.selected_node.variant.(^Function)
 			link_variable(var, func, release_ctx.function_input_index - 1)
+		}
+		if release_ctx.select_type == .Function_Output {
+			var := app_input_ctx.selected_node.variant.(^Variable)
+			func := release_ctx.selected_node.variant.(^Function)
+			link_output(var, func)
 		}
 		return
 	}

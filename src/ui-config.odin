@@ -21,13 +21,18 @@ color_member_output_outline :: color_dark2
 color_member_output_filled  :: color_light1
 color_member_to_func_line   :: color_light1
 
-color_func_bg            :: color_dark2
-color_func_outline       :: color_dark2
-color_func_exec_outline  :: color_accent
-color_func_exec_filled   :: color_accent
-color_func_exec_line     :: color_dark2
-color_func_input_outline :: color_light1
-color_func_input_filled  :: color_light1
+color_func_bg               :: color_dark2
+color_func_outline          :: color_dark2
+color_func_exec_outline     :: color_accent
+color_func_exec_filled      :: color_accent
+color_func_exec_line        :: color_dark2
+color_func_input_outline    :: color_light1
+color_func_input_filled     :: color_light1
+color_func_divider          :: color_accent
+color_func_ouput_outline    :: color_accent
+color_member_to_output_line :: color_dark2
+color_func_output_filled    :: color_accent
+color_member_to_out_filled  :: color_dark2
 
 color_inspector_bg         :: color_light1
 color_inspector_member_add :: color_dark2
@@ -48,7 +53,7 @@ size_member_roundedness :: 2
 size_character          :: 10
 
 size_func_w           :: 200
-size_func_h           :: 120
+size_func_h           :: 150
 size_func_output      :: 12
 size_func_exec        :: 12
 size_func_input       :: 8

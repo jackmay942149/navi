@@ -19,6 +19,7 @@ Selection_Type :: enum {
 	Exec_Out,
 	Exec_In,
 	Function_Input,
+	Function_Output,
 	Member_Add,
 	Function_Add,
 	Whole_Member,
@@ -139,6 +140,14 @@ application_draw_function :: proc(func: ^Function) {
 	csr := str.clone_to_cstring(func.name, context.temp_allocator)
 	rl.DrawText(csr, func.pos.x + 10, func.node.pos.y + 5, size_font, col)
 	free_all(context.temp_allocator)
+
+	// Function Output
+	if func.has_output {
+		pos := node_get_input_in_pos_i32(func, func.input_count)
+		rl.DrawLine(pos.x - offset_func_in.x, pos.y, pos.x - offset_func_in.x + func.size.x, pos.y, color_func_divider)
+		pos = node_get_input_in_pos_i32(func, func.input_count + 1)
+		rl.DrawCircleLines(pos.x, pos.y, size_func_input, color_func_ouput_outline)
+	}
 	return
 }
 
@@ -176,6 +185,14 @@ application_draw_lines :: proc(class: ^Class) {
 			rl.DrawLineBezier(exec_in_pos, exec_out_pos, 2,	color_func_exec_line)
 			rl.DrawCircle(i32(exec_in_pos.x), i32(exec_in_pos.y), size_func_exec, color_func_exec_filled)
 			rl.DrawCircle(i32(exec_out_pos.x), i32(exec_out_pos.y), size_func_exec, color_func_exec_filled)
+		}
+
+		if func.output != nil {
+			member_pos := node_get_member_pos_f32(func.output)
+			output_pos := node_get_output_pos_f32(func)
+			rl.DrawLineBezier(member_pos, output_pos, 1, color_member_to_output_line)
+			rl.DrawCircle(i32(member_pos.x), i32(member_pos.y), size_member_output, color_member_to_out_filled)
+			rl.DrawCircle(i32(output_pos.x), i32(output_pos.y), size_func_output, color_func_output_filled)
 		}
 	}
 }

@@ -5,6 +5,7 @@ import str "core:strings"
 Function :: struct {
 	name, directive:     string,
 	type:                FunctionType,
+	has_output:          bool,
 	output:              ^Variable,
 	using node:          Node,
 	inputs:              []^Variable,

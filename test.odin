@@ -129,7 +129,7 @@ single_float_member_decimal :: proc(t: ^test.T) {
 @(test)
 single_vec3_member :: proc(t: ^test.T) {
 	foo := navi.init_class("SingleVec3Member", "MonoBehaviour")
-	bar := navi.init_member_new(&foo, "Bar", .Vector3, "1", {})
+	bar := navi.init_member_new(&foo, "Bar", .Vector3, "", {})
 	navi.save_class(&foo)
 	test.expect(t, util_check_output_file("./SingleVec3Member.cs", "./tests/SingleVec3Member.cs"))
 	navi.destroy_class(&foo)

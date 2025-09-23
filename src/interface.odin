@@ -82,12 +82,13 @@ add_function :: proc {
 }
 
 add_function_new :: proc(
-class: ^Class,
-name, directive: string,
-type := FunctionType.Standard,
+class           : ^Class,
+name, directive : string,
+type            := FunctionType.Standard,
 input_count, exec_in_count, exec_out_count: int,
-position : [2]i32 = {0, 0},
-allocator := context.allocator,
+position        : [2]i32 = {0, 0},
+has_output      : bool,
+allocator       := context.allocator,
 ) -> (
 func: ^Function) {
 	context.allocator = allocator
@@ -104,6 +105,7 @@ func: ^Function) {
 	func.pos = position
 	func.size = {size_func_w, size_func_h}
 	func.variant = func
+	func.has_output = has_output
 
 	err: mem.Allocator_Error
 	func.inputs, err = make([]^Variable, input_count)
@@ -124,7 +126,7 @@ func: ^Function) {
 add_function_defined :: proc(class: ^Class, def: Predefined_Function, position : [2]i32 = {0, 0}, allocator := context.allocator) -> (func: ^Function) {
 	context.allocator = allocator
 	using def
-	return add_function_new(class, name, directive, type, input_count, exec_in_count, exec_out_count, position)
+	return add_function_new(class, name, directive, type, input_count, exec_in_count, exec_out_count, position, def.has_output)
 }
 
 link_function :: proc(from: ^Function, to: ^Function) {
@@ -151,7 +153,6 @@ link_variable :: proc(var: ^Variable, func: ^Function, pos: int = 0) {
 link_output :: proc(var: ^Variable, func: ^Function) {
 	assert(var != nil)
 	assert(func != nil)
-	assert(func.output == nil)
 	func.output = var
 }
 

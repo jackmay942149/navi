@@ -14,14 +14,22 @@
 # Release - v.0.2 - Rigidbody Controller Video
 - Class Name
 - Split Node
-- Searchable Nodes
-- Ordered Rendering
 - Delete Nodes
-- Member Adjustment Edit Button
 - Set Node
 - Function Outputs
 - Add addition, division, subtraction
 - Fix GetComponent Node
+
+- Add underscore character
+- Class name
+- Add output
+- Fix input 2+
+- Fix GetComponent
+- Split Node
+- Invalid node pos
+
+# Day 14 - 23/09/2025
+- Add member adjustments
 
 # Day 13 - 18/09/2025
 - Refactored drawing and fixed vector constructor and multiply nodes

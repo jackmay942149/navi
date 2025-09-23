@@ -58,3 +58,7 @@ variable_as_value :: proc(var: ^Variable, allocator := context.allocator) -> str
   }
   return ""
 }
+
+variable_recalculate_width :: proc(node: ^Node) {
+	node.size.x = size_member_w + i32(len(node.variant.(^Variable).name)) * size_character
+}

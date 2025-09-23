@@ -3,6 +3,9 @@ package src
 @(rodata)
 Available_Functions := []Predefined_Function {
 	Times,
+	Add,
+	Divide,
+	Subtract,
 	Unity_DebugLog,
 	Unity_Start,
 	Unity_Awake,
@@ -19,6 +22,30 @@ Predefined_Function :: struct {
 
 Times :: Predefined_Function {
 	name           = "*",
+	type           = .Binary,
+	input_count    = 2,
+	exec_in_count  = 1,
+	exec_out_count = 1,
+}
+
+Add :: Predefined_Function {
+	name           = "+",
+	type           = .Binary,
+	input_count    = 2,
+	exec_in_count  = 1,
+	exec_out_count = 1,
+}
+
+Divide :: Predefined_Function {
+	name           = "/",
+	type           = .Binary,
+	input_count    = 2,
+	exec_in_count  = 1,
+	exec_out_count = 1,
+}
+
+Subtract :: Predefined_Function {
+	name           = "-",
 	type           = .Binary,
 	input_count    = 2,
 	exec_in_count  = 1,

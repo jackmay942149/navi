@@ -15,12 +15,12 @@ node_move :: proc(node: ^Node, x,y : i32) {
 
 node_get_member_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
 	assert(node != nil)	
-	return {node.pos.x + offset_member_out.x, node.pos.y + offset_member_out.y}
+	return {node.pos.x + offset_member_out.x + i32(len(node.variant.(^Variable).name)) * size_character, node.pos.y + offset_member_out.y}
 }
 
 node_get_member_pos_f32 :: proc(node: ^Node) -> (pos: [2]f32) {
 	assert(node != nil)	
-	return {f32(node.pos.x + offset_member_out.x), f32(node.pos.y + offset_member_out.y)}
+	return {f32(node.pos.x + offset_member_out.x + i32(len(node.variant.(^Variable).name)) * size_character), f32(node.pos.y + offset_member_out.y)}
 }
 
 node_get_exec_in_pos_f32 :: proc(node: ^Node) -> (pos: [2]f32) {

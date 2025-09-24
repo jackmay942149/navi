@@ -12,8 +12,25 @@
 - Dll Unity
 
 # Release - v.0.2 - Rigidbody Controller Video
-- Class Name
-- Delete Nodes
+- Class Name (Below Utils)
+- Delete Function
+- Delete Member
+- Delete Split
+- Delete Link
+- Remove Initial Value for Complex Types
+- Ui for SPLIT (UTILS)
+- Make split rounded
+- Make split resize
+- Look at pin colours when connecting split
+- Reuse member
+- Function Vertical Resizing
+- Basic Numbers (0, 1) (UTILS)
+- Decimal point input
+- Split output line
+- Type Pagination
+- Function Pagination
+- split to split setup
+
 - Fix split issues
 
 # Day 15 - 24/09/2025

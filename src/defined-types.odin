@@ -11,10 +11,7 @@ Available_Types := []Predefined_Type {
   CSharp_String,
   CSharp_Int,
   CSharp_Float,
-<<<<<<< HEAD
   CSharp_Bool,
-=======
->>>>>>> 9d2b45509390ede6634842530561f2a6befd59c2
   Unity_Vector3f,
   Unity_Rigidbody,
 }
@@ -31,13 +28,10 @@ CSharp_Float :: Predefined_Type {
   type = .Float,
 }
 
-<<<<<<< HEAD
 CSharp_Bool :: Predefined_Type {
   type = .Bool,
 }
 
-=======
->>>>>>> 9d2b45509390ede6634842530561f2a6befd59c2
 Unity_Float_X :: Predefined_Type {
   type = .Float,
   name = "x",
@@ -66,7 +60,6 @@ Unity_Linear_Velocity :: Predefined_Type {
 
 Unity_Rigidbody :: Predefined_Type {
   type = .Rigidbody,
-<<<<<<< HEAD
   fields = {Unity_Linear_Velocity, Unity_Angular_Damping, Unity_Angular_Velocity, Unity_Automatic_Center_Of_Mass, Unity_Automatic_Inertia_Tensor, Unity_Center_Of_Mass, Unity_Detect_Collisions, Unity_Freeze_Rotation, Unity_Inertia_Tensor, Unity_Is_Kinematic, Unity_Linear_Damping, Unity_Mass, Unity_Max_Angular_Velocity, Unity_Max_Depenetraction_Velocity, Unity_Max_Linear_Velocity, Unity_Position, Unity_Sleep_Threshold, Unity_Solver_Iterations, Unity_Solver_Velocity_Iterations, Unity_Use_Gravity, }
 }
 
@@ -167,8 +160,6 @@ Unity_Solver_Velocity_Iterations :: Predefined_Type {
 Unity_Use_Gravity :: Predefined_Type {
   type = .Bool,
   name = "useGravity",
-=======
   fields = {Unity_Linear_Velocity, }
->>>>>>> 9d2b45509390ede6634842530561f2a6befd59c2
 }
 

@@ -160,6 +160,15 @@ application_draw_function :: proc(func: ^Function) {
 application_draw_split :: proc(split: ^Split) {
 	assert(split != nil)
 	
+	if split.variable != nil {
+		split.size.y = 25 * i32(len(split.variable.fields))
+
+		max_field_char_len := 0
+		for field in split.variable.fields {
+			max_field_char_len = max(max_field_char_len, len(field.name))
+		}
+		split.size.x = 88 + i32(max_field_char_len) * 12
+	}
 	rl.DrawRectangle(split.pos.x, split.pos.y, split.size.x, split.size.y, color_split_bg)
 
 	// Draw in
@@ -172,7 +181,7 @@ application_draw_split :: proc(split: ^Split) {
 			pos := node_get_split_out_pos_i32(split, i)
 			rl.DrawCircleLines(pos.x, pos.y, size_split_pin, color_split_pin)
 			cst := str.clone_to_cstring(field.name, context.temp_allocator) // CRINGE
-			rl.DrawText(cst, pos.x - 30, pos.y - 10, size_font, color_split_font)
+			rl.DrawText(cst, split.pos.x + 30, pos.y - 10, size_font, color_split_font)
 			free_all(context.temp_allocator)
 		}
 	}

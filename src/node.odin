@@ -85,10 +85,10 @@ node_get_split_in_pos_i32 :: proc(node: ^Node) -> (pos: [2]i32) {
 
 node_get_split_out_pos_f32 :: proc(node: ^Node, i: int) -> (pos: [2]f32) {
 	assert(node != nil)
-	return {f32(node.pos.x) + 90, f32(node.pos.y) + 10 + 25 * f32(i)}
+	return {f32(node.pos.x) + f32(node.size.x) - 15, f32(node.pos.y) + 10 + 25 * f32(i)}
 }
 
 node_get_split_out_pos_i32 :: proc(node: ^Node, i: int) -> (pos: [2]i32) {
 	assert(node != nil)
-	return {i32(node.pos.x) + 90, i32(node.pos.y) + 10  + 25 * i32(i)}
+	return {i32(node.pos.x) + node.size.x - 15, i32(node.pos.y) + 10  + 25 * i32(i)}
 }

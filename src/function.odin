@@ -132,10 +132,18 @@ function_call_binary :: proc(builder: ^str.Builder, func: ^Function) {
 	assert(func.input_count == 2)
 	assert(func.inputs != nil)
 	assert(len(func.inputs) > 1)
+	if func.inputs[0].parent_name != "" {
+		str.write_string(builder, string(func.inputs[0].parent_name))
+		str.write_string(builder, ".")
+	}
 	str.write_string(builder, string(func.inputs[0].name))
 	str.write_string(builder, " ")
 	str.write_string(builder, func.name)
 	str.write_string(builder, " ")
+	if func.inputs[1].parent_name != "" {
+		str.write_string(builder, string(func.inputs[1].parent_name))
+		str.write_string(builder, ".")
+	}
 	str.write_string(builder, string(func.inputs[1].name))
 	str.write_string(builder, ";")
 }

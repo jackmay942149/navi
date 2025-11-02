@@ -17,6 +17,9 @@ input_poll :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		input_deselect(class, app_input_ctx)
 		return
 	}
+	if app_input_ctx.select_type == .Change_Class {
+		change_class_name(&class.name)
+	}
 	if app_input_ctx.select_type == .Change_Name {
 		change_name(app_input_ctx.selected_node)
 	}
@@ -102,6 +105,26 @@ select_new_function :: proc(class: ^Class, inspector_state: Inspector_State, mou
 		}
 	}
 	return
+}
+
+@(private = "file")
+select_change_class :: proc(class: ^Class, inspector_state: Inspector_State, mouse_pos: [2]f32) -> (selected := false) {
+	assert(class != nil)
+
+	if inspector_state == .Change {
+		return
+	}
+
+	rec := rl.Rectangle {
+		x      = offset_inspector_edit,
+		y      = f32(60 + 30 * (len(Available_Functions) + len(Available_Types) + 2)),
+		width  = 60,
+		height = 25,
+	}
+	if rl.CheckCollisionPointRec(mouse_pos, rec) {
+		return true
+	}
+	return false
 }
 
 @(private = "file")
@@ -248,6 +271,14 @@ input_select :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		return
 	}
 
+	selected = select_change_class(class, app_input_ctx.inspector_state, mouse_pos)
+	if selected {
+		app_input_ctx.select_type     = .Change_Class
+		app_input_ctx.inspector_state = .Add
+		app_input_ctx.selected_node   = nil
+		return
+	}
+
 	select_type: Selection_Type
 	selected, new_node, select_type = select_member(class, mouse_pos)
 	if selected {
@@ -347,7 +378,7 @@ input_deselect :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 @(private = "file")
 change_name :: proc(node: ^Node) {
 	assert(node != nil)
-	if rl.IsKeyPressed(.BACKSPACE) {
+	if rl.IsKeyPressed(.BACKSPACE) && len(node.variant.(^Variable).name) > 0 {
 		node.variant.(^Variable).name = node.variant.(^Variable).name[:len(node.variant.(^Variable).name)-1]
 	}
 	node.variant.(^Variable).name = add_letter(node.variant.(^Variable).name)
@@ -358,9 +389,19 @@ change_name :: proc(node: ^Node) {
 }
 
 @(private = "file")
+change_class_name :: proc(name: ^string) {
+	name := name
+	assert(name != nil)
+	if rl.IsKeyPressed(.BACKSPACE) && len(name) > 0 {
+		name^ = name[:len(name)-1]
+	}
+	name^ = add_letter(name^)
+}
+
+@(private = "file")
 change_value :: proc(node: ^Node) {
 	assert(node != nil)
-	if rl.IsKeyPressed(.BACKSPACE) {
+	if rl.IsKeyPressed(.BACKSPACE) && len(node.variant.(^Variable).value) > 0 {
 		node.variant.(^Variable).value = node.variant.(^Variable).name[:len(node.variant.(^Variable).value)-1]
 	}
 	node.variant.(^Variable).value = add_letter(node.variant.(^Variable).value)

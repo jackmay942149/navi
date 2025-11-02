@@ -56,8 +56,8 @@ size_member_output      :: 10
 size_member_roundedness :: 2
 size_character          :: 10
 
-size_func_w           :: 200
-size_func_h           :: 150
+size_func_w           :: 220
+size_func_h           :: 200
 size_func_output      :: 12
 size_func_exec        :: 12
 size_func_input       :: 8
@@ -71,7 +71,7 @@ size_split_pin :: 8
 offset_member_out :: [2]i32{80, 15}
 offset_func_in    :: [2]i32{20, 65}
 offset_exec_in    :: [2]i32{20, 40}
-offset_exec_out   :: [2]i32{180, 15}
+offset_exec_out   :: [2]i32{200, 15}
 
 offset_inspector_margin_1 :: size_window_width - size_inspector_width + 10
 offset_inspector_margin_2 :: size_window_width - size_inspector_width + 150

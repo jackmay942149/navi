@@ -12,7 +12,7 @@ File_Context :: struct {
 @(private)
 file_init :: proc(file: ^File_Context, name: string) {
 	assert(file != nil)
-	temp := [?]string{"./", name, ".cs"}
+	temp := [?]string{"./Assets/Scripts/", name, ".cs"}
 	file_path := strings.concatenate(temp[:])
 	defer delete(file_path)
 	f, err := os.open(file_path, os.O_TRUNC | os.O_WRONLY | os.O_CREATE)

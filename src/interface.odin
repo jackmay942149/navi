@@ -104,7 +104,6 @@ func: ^Function) {
 	func.type = type
 	func.input_count = input_count
 	func.pos = position
-	func.size = {size_func_w, size_func_h}
 	func.variant = func
 	func.has_output = has_output
 
@@ -120,6 +119,7 @@ func: ^Function) {
 	func.exec_outs, err = make([]^Function,  exec_out_count)
 	assert(err == nil)
 
+	func.size = {size_func_w, i32(50 + 20 * (func.exec_in_count + func.input_count + 2 * int(func.has_output)))}
 	append(&class.functions, func)
 	return func
 }

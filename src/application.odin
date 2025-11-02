@@ -30,6 +30,7 @@ Selection_Type :: enum {
 	Split_Node,
 	Split_In,
 	Split_Out,
+	Change_Class,
 }
 
 @(private)
@@ -65,7 +66,7 @@ application_update :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
 		application_draw_split(split)
 	}
 	application_draw_lines(class)
-	application_draw_inspector(app_input_ctx)
+	application_draw_inspector(class, app_input_ctx)
 	rl.EndDrawing()
 }
 
@@ -169,7 +170,11 @@ application_draw_split :: proc(split: ^Split) {
 		}
 		split.size.x = 88 + i32(max_field_char_len) * 12
 	}
-	rl.DrawRectangle(split.pos.x, split.pos.y, split.size.x, split.size.y, color_split_bg)
+
+	rec := rl.Rectangle{f32(split.pos.x), f32(split.pos.y), f32(split.size.x), f32(split.size.y)}
+	round: f32 = size_func_roundedness
+	seg: i32 = size_segments
+	rl.DrawRectangleRounded(rec, round, seg, color_split_bg)
 
 	// Draw in
 	pos := node_get_split_in_pos_i32(split)
@@ -249,7 +254,8 @@ application_draw_lines :: proc(class: ^Class) {
 	}
 }
 
-application_draw_inspector :: proc(app_input_ctx: ^App_Input_Ctx) {
+application_draw_inspector :: proc(class: ^Class, app_input_ctx: ^App_Input_Ctx) {
+	assert(class != nil)
 	assert(app_input_ctx != nil)
 	// Draw Background
 	rl.DrawRectangle(size_window_width - size_inspector_width, 0, size_inspector_width, size_window_height, color_inspector_bg)
@@ -257,7 +263,7 @@ application_draw_inspector :: proc(app_input_ctx: ^App_Input_Ctx) {
 	// Draw Inspector
 	switch app_input_ctx.inspector_state {
 		case .Change: draw_change_panel(app_input_ctx.selected_node, app_input_ctx.select_type)
-		case .Add:    draw_add_panel()
+		case .Add:    draw_add_panel(&class.name, app_input_ctx)
 	}
 }
 
@@ -301,21 +307,40 @@ draw_change_panel :: proc(node: ^Node, select_type: Selection_Type) {
 }
 
 @(private="file")
-draw_add_panel :: proc() {
+draw_add_panel :: proc(class_name: ^string, app_input_ctx: ^App_Input_Ctx) {
+	assert(class_name != nil)
 	// Members
 	rl.DrawText("Available Types", offset_inspector_margin_1, 30, size_font, color_font_member)
 	member_count: int
 	for type, i in Available_Types {
 		rl.DrawRectangle(size_window_width - size_inspector_width + 5, 60 + 30 * i32(i), size_inspector_width / 2, 25, color_inspector_member_add)
 		rl.DrawText(Variable_Type_As_CString[type.type], offset_inspector_margin_1, 60 + 30 * i32(i), size_font, color_font)
-		member_count = i
+		member_count = i+1
 	}
 
 	// Functions
-	rl.DrawText("Available Functions", offset_inspector_margin_1, 90 + 30 * i32(member_count), size_font, color_font_member)
+	rl.DrawText("Available Functions", offset_inspector_margin_1, 60 + 30 * i32(member_count), size_font, color_font_member)
+	function_count: int
 	for func, i in Available_Functions {
-		rl.DrawRectangle(size_window_width - size_inspector_width + 5, 120 + 30 * i32(member_count + i), size_inspector_width / 2, 25, color_inspector_member_add)
+		rl.DrawRectangle(size_window_width - size_inspector_width + 5, 60 + 30 * i32(member_count + i + 1), size_inspector_width / 2, 25, color_inspector_member_add)
 		csr := str.clone_to_cstring(func.name, context.temp_allocator)
-		rl.DrawText(csr, offset_inspector_margin_1, 120 + 30 * i32(member_count + i), size_font, color_font)
+		rl.DrawText(csr, offset_inspector_margin_1, 60 + 30 * i32(member_count + i + 1), size_font, color_font)
+		function_count = i + 1
+	}
+
+	// Class Name
+	rl.DrawText("Class Name", offset_inspector_margin_1, 60 + 30 * i32(member_count + function_count + 1), size_font, color_font_member)
+	rl.DrawRectangle(size_window_width - size_inspector_width + 5, 60 + 30 * i32(member_count + function_count + 2), size_inspector_width / 2, 25, color_inspector_member_add)
+	csr := str.clone_to_cstring(class_name^, context.temp_allocator)
+	if app_input_ctx.select_type == .Change_Class {
+		rl.DrawText(csr, offset_inspector_margin_1, 60 + 30 * i32(member_count + function_count + 2), size_font, color_inspector_bg)
+	} else {
+		rl.DrawText(csr, offset_inspector_margin_1, 60 + 30 * i32(member_count + function_count + 2), size_font, color_font)
+	}
+	if app_input_ctx.select_type == .Change_Class {
+		draw_edit_button({offset_inspector_edit, f32(60 + 30 * (member_count + function_count + 2))}, true)
+	} else {
+		draw_edit_button({offset_inspector_edit, f32(60 + 30 * (member_count + function_count + 2))})
 	}
 }
+

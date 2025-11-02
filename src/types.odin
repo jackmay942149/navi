@@ -7,6 +7,7 @@ Variable_Type :: enum {
   Vector3,
   Rigidbody,
   Bool,
+  Mover,
 }
 
 @(rodata)
@@ -17,6 +18,7 @@ Variable_Type_Id := [?]cstring {
   "V3",
   "Rb",
   " B",
+  " M",
 }
 
 @(rodata)
@@ -27,6 +29,7 @@ Variable_Type_As_String := [?]string {
   "Vector3",
   "Rigidbody",
   "bool",
+  "Mover",
 }
 
 @(rodata)
@@ -37,5 +40,6 @@ Variable_Type_As_CString := [?]cstring {
   "Vector3",
   "Rigidbody",
   "bool",
+  "Mover",
 }
 

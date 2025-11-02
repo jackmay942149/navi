@@ -11,9 +11,10 @@ Available_Types := []Predefined_Type {
   CSharp_String,
   CSharp_Int,
   CSharp_Float,
-  CSharp_Bool,
   Unity_Vector3f,
   Unity_Rigidbody,
+  CSharp_Bool,
+  Custom_Mover,
 }
 
 CSharp_String :: Predefined_Type {
@@ -26,10 +27,6 @@ CSharp_Int :: Predefined_Type {
 
 CSharp_Float :: Predefined_Type {
   type = .Float,
-}
-
-CSharp_Bool :: Predefined_Type {
-  type = .Bool,
 }
 
 Unity_Float_X :: Predefined_Type {
@@ -160,6 +157,19 @@ Unity_Solver_Velocity_Iterations :: Predefined_Type {
 Unity_Use_Gravity :: Predefined_Type {
   type = .Bool,
   name = "useGravity",
-  fields = {Unity_Linear_Velocity, }
+}
+
+CSharp_Bool :: Predefined_Type {
+  type = .Bool,
+}
+
+Mover_Speed :: Predefined_Type {
+  type = .Float,
+  name = "speed",
+}
+
+Custom_Mover :: Predefined_Type {
+  type = .Mover,
+  fields = {Mover_Speed, }
 }
 

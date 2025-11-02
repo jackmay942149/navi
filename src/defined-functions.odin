@@ -20,6 +20,7 @@ Available_Functions := []Predefined_Function {
   Unity_Vec3Constructor,
   Unity_GetComponent,
   Unity_AddComponent,
+  Unity_OnTriggerEnter,
 }
 
 Times :: Predefined_Function {
@@ -129,6 +130,16 @@ Unity_AddComponent :: Predefined_Function {
   has_output = true,
   input_count = 0,
   exec_in_count = 1,
+  exec_out_count = 1,
+}
+
+Unity_OnTriggerEnter :: Predefined_Function {
+  name = "OnTriggerEnter",
+  directive = "UnityEngine",
+  type = .Standard,
+  has_output = false,
+  input_count = 0,
+  exec_in_count = 0,
   exec_out_count = 1,
 }
 
